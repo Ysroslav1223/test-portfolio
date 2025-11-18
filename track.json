@@ -1,0 +1,81 @@
+{
+  "tracks": [
+    {
+      "image": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Shaki_waterfall.jpg",
+      "title": "Waterfall",
+      "year": 2020
+    },
+    {
+      "image": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg",
+      "title": "Golden Autumn",
+      "year": 2018
+    },
+    {
+      "image": "https://upload.wikimedia.org/wikipedia/commons/5/5f/Paris_Night.jpg",
+      "title": "Night City",
+      "year": 2023
+    }
+  ],
+  "tracksNotRealized":[
+   {
+    "title": "Track 1",
+    "tag": "demo",
+    "note": "Короткая заметка о треке №1.",
+    "src": "SRC_HERE"
+  },
+  {
+    "title": "Track 2",
+    "tag": "demo",
+    "note": "Короткая заметка о треке №2.",
+    "src": "SRC_HERE"
+  },
+  {
+    "title": "Track 3",
+    "tag": "demo",
+    "note": "Короткая заметка о треке №3.",
+    "src": "SRC_HERE"
+  },
+  {
+    "title": "Track 4",
+    "tag": "mix",
+    "note": "Короткая заметка о треке №4.",
+    "src": "SRC_HERE"
+  },
+  {
+    "title": "Track 5",
+    "tag": "mix",
+    "note": "Короткая заметка о треке №5.",
+    "src": "SRC_HERE"
+  },
+  {
+    "title": "Track 6",
+    "tag": "demo",
+    "note": "Короткая заметка о треке №6.",
+    "src": "SRC_HERE"
+  },
+  {
+    "title": "Track 7",
+    "tag": "master",
+    "note": "Короткая заметка о треке №7.",
+    "src": "SRC_HERE"
+  },
+  {
+    "title": "Track 8",
+    "tag": "demo",
+    "note": "Короткая заметка о треке №8.",
+    "src": "SRC_HERE"
+  },
+  {
+    "title": "Track 9",
+    "tag": "mix",
+    "note": "Короткая заметка о треке №9.",
+    "src": "SRC_HERE"
+  },
+  {
+    "title": "Track 10",
+    "tag": "demo",
+    "note": "Короткая заметка о треке №10.",
+    "src": "SRC_HERE"
+  }
+  ]
+}
