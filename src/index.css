@@ -7,3 +7,34 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+@font-face {
+  font-family: 'FirstFonts';
+  src: url('../public//fonts/Wosker\ Demo.otf') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SecondFonts';
+  src: url('../public//fonts/Zerove-Regular.otf') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SixFonts';
+  src: url('../public/fonts/evolventa-1.0/ttf/Evolventa-Oblique.ttf') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SevenFonts';
+  src: url('../public/fonts/evolventa-1.0/ttf/Evolventa-BoldOblique.ttf') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'EightFonts';
+  src: url('../public/fonts/Poppins-ExtraLight.ttf') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
