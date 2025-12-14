@@ -81,7 +81,6 @@ function App() {
 
 
 
-
    
 
     console.log(data.questionAnswer);

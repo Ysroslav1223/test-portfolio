@@ -1,4 +1,4 @@
-import { useState,} from "react"
+import { useEffect, useState,} from "react"
 import { X } from 'lucide-react'
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -52,7 +52,47 @@ export const Services = ({title, descrip, btn}) => {
     }
   }
 
-  // Настройка react-hook-form
+  useEffect(() => {
+  if (isModalOpen) {
+    // Блокируем скролл на body
+    document.body.style.overflow = 'hidden'
+    
+    // Отключаем Lenis если он есть
+    if (window.lenisInstance) {
+      window.lenisInstance.stop()
+    }
+    
+    // Или если Lenis используется через window.lenis
+    if (window.lenis) {
+      window.lenis.stop()
+    }
+    
+    // Или если Lenis подключен через библиотеку
+    if (typeof window.__lenis !== 'undefined') {
+      window.__lenis.stop()
+    }
+    
+  } else {
+    document.body.style.overflow = 'unset'
+  }
+  
+  return () => {
+    document.body.style.overflow = 'unset'
+    
+    // Включаем Lenis обратно при закрытии модалки
+    if (window.lenisInstance) {
+      window.lenisInstance.start()
+    }
+    
+    if (window.lenis) {
+      window.lenis.start()
+    }
+    
+    if (typeof window.__lenis !== 'undefined') {
+      window.__lenis.start()
+    }
+  }
+}, [isModalOpen])
   const { 
     register, 
     handleSubmit, 
