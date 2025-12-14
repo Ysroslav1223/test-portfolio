@@ -1,6 +1,4 @@
-import DynamicNoise from "./components/NoiseBackground/NoiseBackground"
-import { Header } from "./components/header/header"
-import { motion,AnimatePresence, animate } from "framer-motion"
+import { motion,AnimatePresence,  } from "framer-motion"
 import { useRef,useState,useEffect } from "react"
 import trackData from '../track.json'
 import data from '../question-anwser.json'
@@ -12,8 +10,9 @@ import Iam from '../public/images/micha.jpg'
 import secondImg from '../public/images/four.png'
 import fon from '../public/images/fon3.png'
 import fon2 from '../public/images/fon2.png'
+import { Services } from "./components/services/services"
+import 'react-phone-input-2/lib/style.css'
 
-import secondImgMicha from '../public/images/secondImg.png'
 
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -23,8 +22,9 @@ import "lenis/dist/lenis.css";
 
 
 gsap.registerPlugin(ScrollTrigger); 
-function App() {
 
+
+function App() {
 
   const stackSections = useRef([]); 
 
@@ -79,19 +79,10 @@ function App() {
   };
 }, []);
 
-  const continueCurrent= useRef()
 
 
-    const scrollToData=()=>{
-      if(continueCurrent.current){
-      const top = continueCurrent.current.offsetTop
-      animate(window.scrollY,top,{
-        onUpdate(value){
-          window.scrollTo(0,value)
-        }
-      })
-    }
-    }
+
+   
 
     console.log(data.questionAnswer);
 
@@ -121,11 +112,13 @@ function App() {
       }}
     >
       <div className="absolute inset-0 bg-black/40 lg:bg-black/20"></div>
-      <div className="text-end flex flex-col justify-end items-center text-[#F8F8FF] z-10 relative">
-        <h2 className="  text-3xl "style={{fontFamily:'EightFonts,sans-serif'}}>Michael Houdini</h2>
-        <h3 className="text-xl " style={{fontFamily:'SecondFonts,sans-serif'}}>producer</h3>
+      <div className="text-end flex flex-col justify-end items-center text-[#F8F8FF] z-10 relative lg:flex absolute ">
+        <h2 className="text-3xl lg:xl:text-9xl lg:mb-4  items-center "style={{fontFamily:'EightFonts,sans-serif'}}>Michael Houdini</h2>
+        <h3 className="text-xl lg:mb-10 lg:ml-160 lg:text-6xl" style={{fontFamily:'SecondFonts,sans-serif'}}>producer</h3>
       </div>
     </div>
+    
+    
 
     <div 
       className="
@@ -163,56 +156,6 @@ function App() {
             <path d="M7.75 2h8.5C19.55 2 22 4.45 22 7.75v8.5c0 3.3-2.45 5.75-5.75 5.75h-8.5C4.45 22 2 19.55 2 16.25v-8.5C2 4.45 4.45 2 7.75 2zm0 1.5C5.68 3.5 4 5.18 4 7.25v9.5C4 18.32 5.68 20 7.75 20h8.5c2.07 0 3.75-1.68 3.75-3.75v-9.5C20 5.68 18.32 3.5 16.25 3.5h-8.5zM12 7a5 5 0 110 10 5 5 0 010-10zm0 1.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7zm4.75-.88a1.12 1.12 0 110 2.24 1.12 1.12 0 010-2.24z" />
             </svg>
           </a>
-        </div>
-
-        <div className="flex justify-center items-end relative top-70">
-          <AnimatePresence>
-            <motion.div
-              onClick={scrollToData}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ 
-                duration: 1.2,
-                ease: "easeOut",
-                delay: 0.3
-              }}
-              className="hidden lg:block" 
-            >
-              <motion.div
-                animate={{ 
-                  y: [0, -12, 0],
-                }}
-                transition={{ 
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                <svg 
-                  className="w-10 h-10 text-white mx-auto" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24" 
-                >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={1.5} 
-                    d="M19 14l-7 7m0 0l-7-7m7 7V3" 
-                  />
-                </svg>
-              </motion.div>
-              <motion.p 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.2, duration: 0.8 }}
-                className="text-white mt-3 text-lg italic font-light text-center"
-              >
-                коснись, чтобы продолжить...
-              </motion.p>
-            </motion.div>
-          </AnimatePresence>
         </div>
       </div>
     </div>
@@ -270,7 +213,7 @@ function App() {
     <Social/>
   </div>
 </section>
-       <section ref={(el) => (stackSections.current[1] = el)} className="min-h-screen  items-center flex  flex-col text-white pt-10 bg-cover mb-20" style={{backgroundImage:`url(${fon})`}}>
+       <section ref={(el) => (stackSections.current[1] = el)} className="min-h-screen  items-center flex  flex-col text-white pt-10 bg-cover" style={{backgroundImage:`url(${fon})`}}>
       <div className="flex flex-col items-center w-90 bg-[#000000] pb-30 rounded-[40px]">
         <div className="mt-6 text-4xl text-center pt-15">
           <motion.h2 initial={{ opacity: 0, y: 50 }}
@@ -282,7 +225,7 @@ function App() {
         </div>
         </div>
     </section>
-    <section ref={(el) => (stackSections.current[2] = el)} className="min-h-screen bg-[#a39a6f] items-center flex relative -mt-12 rounded-t-[40px]  flex-col   text-white pt-20">
+    <section ref={(el) => (stackSections.current[1] = el)} className="min-h-screen bg-[#a39a6f] items-center flex relative -mt-12   flex-col   text-white pt-20">
        <div>
         <h3 className="font-bold mb-6 text-[#FDF4E3] ">[FAQ]</h3>
       </div>
@@ -317,6 +260,12 @@ function App() {
     ))}
   </div>
 </div>
+    </section>
+    <section ref={(el) => (stackSections.current[1] = el)} className="min-h-screen items-center flex relative -mt-12  px-4 flex-col   text-black pt-20">
+       <div>
+        <h3 className="font-bold mb-6 text-black ">[Услуги]</h3>
+      </div>
+      <Services title={'Продакшн'} descrip={'крутая услуга'} btn={['смета','бриф','связь']}/>
     </section>
     </div>
       
