@@ -31,6 +31,7 @@ function App() {
 
 
   useEffect(() => {
+    document.body.style.overflowX='hidden'
   const isMobile = window.innerWidth <= 768;
 
   const lenis = isMobile 
@@ -180,7 +181,7 @@ function App() {
         
       </div>
     </section>
-   <section ref={(el) => (stackSections.current[1] = el)}  className="min-h-screen items-center flex flex-col text-white pt-10 " style={{backgroundImage:`url(${fon2})`}}>
+   <section   className="min-h-screen items-center flex flex-col text-white pt-10 " style={{backgroundImage:`url(${fon2})`}}>
   <div className="flex flex-col items-center">
     <AnimatePresence>
       <motion.div
@@ -212,7 +213,7 @@ function App() {
     <Social/>
   </div>
 </section>
-       <section ref={(el) => (stackSections.current[1] = el)} className="min-h-screen  items-center flex  flex-col text-white pt-10 bg-cover" style={{backgroundImage:`url(${fon})`}}>
+       <section  className="min-h-screen  items-center flex  flex-col text-white pt-10 bg-cover" style={{backgroundImage:`url(${fon})`}}>
       <div className="flex flex-col items-center w-90 bg-[#000000] pb-30 rounded-[40px]">
         <div className="mt-6 text-4xl text-center pt-15">
           <motion.h2 initial={{ opacity: 0, y: 50 }}
@@ -224,7 +225,7 @@ function App() {
         </div>
         </div>
     </section>
-    <section ref={(el) => (stackSections.current[1] = el)} className="min-h-screen bg-[#a39a6f] items-center flex relative -mt-12   flex-col   text-white pt-20">
+    <section  className="min-h-screen bg-[#a39a6f] items-center flex relative -mt-12   flex-col   text-white pt-20">
        <div>
         <h3 className="font-bold mb-6 text-[#FDF4E3] ">[FAQ]</h3>
       </div>
@@ -260,7 +261,7 @@ function App() {
   </div>
 </div>
     </section>
-    <section ref={(el) => (stackSections.current[1] = el)} className="min-h-screen items-center flex relative -mt-12  px-4 flex-col   text-black pt-20">
+    <section  className="min-h-screen items-center flex relative -mt-12  px-4 flex-col   text-black pt-20">
        <div>
         <h3 className="font-bold mb-6 text-black ">[Услуги]</h3>
       </div>

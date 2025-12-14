@@ -3,6 +3,7 @@ import { X } from 'lucide-react'
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
+import { gsap } from "gsap";
 
 // Схемы валидации для разных форм
 const estimateSchema = yup.object({
@@ -53,46 +54,53 @@ export const Services = ({title, descrip, btn}) => {
   }
 
   useEffect(() => {
-  if (isModalOpen) {
-    // Блокируем скролл на body
-    document.body.style.overflow = 'hidden'
-    
-    // Отключаем Lenis если он есть
-    if (window.lenisInstance) {
-      window.lenisInstance.stop()
-    }
-    
-    // Или если Lenis используется через window.lenis
-    if (window.lenis) {
-      window.lenis.stop()
-    }
-    
-    // Или если Lenis подключен через библиотеку
-    if (typeof window.__lenis !== 'undefined') {
-      window.__lenis.stop()
-    }
-    
-  } else {
-    document.body.style.overflow = 'unset'
-  }
+  let savedScrollY = 0;
   
-  return () => {
-    document.body.style.overflow = 'unset'
+  if (isModalOpen) {
+    // 1. Сохраняем текущую позицию скролла
+    savedScrollY = window.scrollY;
     
-    // Включаем Lenis обратно при закрытии модалки
-    if (window.lenisInstance) {
-      window.lenisInstance.start()
+    // 2. Применяем fixed positioning с отрицательным top
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${savedScrollY}px`;
+    document.body.style.width = '100%';
+    document.body.style.overflow = 'hidden';
+    
+    // 3. НЕ уничтожаем Lenis, только останавливаем
+    if (window.lenis && window.lenis.stop) {
+      window.lenis.stop();
+      // Сохраняем ссылку на остановленный Lenis
+      window._pausedLenis = window.lenis;
     }
     
-    if (window.lenis) {
-      window.lenis.start()
+    // 4. Пауза анимаций GSAP
+    if (gsap && gsap.globalTimeline) {
+      gsap.globalTimeline.pause();
     }
     
-    if (typeof window.__lenis !== 'undefined') {
-      window.__lenis.start()
-    }
+    return () => {
+      // 5. Восстанавливаем позицию скролла
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      
+      // 6. Возвращаемся к сохраненной позиции
+      window.scrollTo(0, savedScrollY);
+      
+      // 7. Возобновляем анимации GSAP
+      if (gsap && gsap.globalTimeline) {
+        gsap.globalTimeline.resume();
+      }
+      
+      // 8. Возобновляем Lenis если он был остановлен
+      if (window._pausedLenis && window._pausedLenis.start) {
+        window._pausedLenis.start();
+        delete window._pausedLenis;
+      }
+    };
   }
-}, [isModalOpen])
+}, [isModalOpen]);
   const { 
     register, 
     handleSubmit, 
@@ -297,7 +305,7 @@ export const Services = ({title, descrip, btn}) => {
       {isModalOpen && (
         <>
           <div 
-            className="fixed inset-0 bg-black/50 z-50 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/92 z-50 backdrop-blur-sm"
             onClick={() => !isSubmitting && setIsModalOpen(false)}
           />
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
