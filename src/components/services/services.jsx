@@ -310,7 +310,7 @@ export const Services = ({title, descrip, btn}) => {
           />
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div 
-              className="bg-white rounded-2xl w-full max-w-2xl max-h-[100vh] overflow-y-auto"
+              className="bg-white rounded-2xl w-full max-w-xl max-h-[86vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="sticky top-0 bg-white border-b p-6 flex justify-between items-center rounded-t-2xl">
