@@ -97,32 +97,47 @@ function App() {
   return (
       <div className="relative">
         
-  <section className="min-h-screen relative overflow-hidden" ref={(el) => (stackSections.current[0] = el)}>
-  <div className="flex flex-col min-h-screen lg:flex-row">
+<section className="min-h-screen relative overflow-hidden" ref={(el) => (stackSections.current[0] = el)}>
+  <div className="flex flex-col min-h-screen md:flex-row">
  
     <div 
       className="
-        relative flex-1 min-h-[50vh] lg:min-h-screen 
-        bg-cover  flex items-end justify-center p-4
-        
+        relative w-full h-[50vh] md:w-1/2 md:h-screen 
+        bg-cover bg-center flex items-end justify-center p-4
       "
       style={{ 
         backgroundImage: `url(${Iam})`,
-        backgroundPosition: ' center 10% ' 
+        backgroundPosition: 'center 33%' 
       }}
     >
-      <div className="absolute inset-0 bg-black/40 lg:bg-black/20"></div>
-      <div className="text-end flex flex-col justify-end items-center text-[#F8F8FF] z-10 relative lg:flex absolute ">
-        <h2 className="text-3xl lg:xl:text-9xl lg:mb-4  items-center "style={{fontFamily:'EightFonts,sans-serif'}}>Michael Houdini</h2>
-        <h3 className="text-xl lg:mb-10 lg:ml-160 lg:text-6xl" style={{fontFamily:'SecondFonts,sans-serif'}}>producer</h3>
+      <div className="absolute inset-0 bg-black/40 md:bg-black/20"></div>
+      
+      {/* Текст для десктопа (виден только на md и выше) */}
+      <div className="hidden md:flex text-[#F8F8FF] z-10 absolute left-8 bottom-8 md:left-10 md:bottom-10 lg:left-12 lg:bottom-12 xl:left-20 xl:bottom-16">
+        <div className="text-left">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl xl:text-8xl mb-2 md:mb-3 lg:mb-4 whitespace-nowrap" style={{fontFamily:'EightFonts,sans-serif'}}>
+            Michael Houdini
+          </h2>
+          <h3 className="text-xl md:text-2xl lg:text-4xl xl:text-6xl" style={{fontFamily:'SecondFonts,sans-serif'}}>
+            producer
+          </h3>
+        </div>
+      </div>
+      
+      {/* Текст для мобильной версии (скрыт на md и выше) */}
+      <div className="md:hidden text-end flex flex-col justify-end items-center text-[#F8F8FF] z-10 relative">
+        <h2 className="text-3xl mb-2" style={{fontFamily:'EightFonts,sans-serif'}}>
+          Michael Houdini
+        </h2>
+        <h3 className="text-xl" style={{fontFamily:'SecondFonts,sans-serif'}}>
+          producer
+        </h3>
       </div>
     </div>
     
-    
-
     <div 
       className="
-        relative  flex-1 min-h-[50vh] lg:min-h-screen 
+        relative w-full h-[50vh] md:w-1/2 md:h-screen
         bg-cover bg-center flex items-start justify-center p-4
       "
       style={{ 
@@ -130,30 +145,30 @@ function App() {
        
       }}
     >
-      <div className="absolute inset-0 bg-black/40 lg:bg-black/40"></div>
+      <div className="absolute inset-0 bg-black/40 md:bg-black/40"></div>
       
       <div className="text-center font-bold text-[#FDF4E3] max-w-md relative z-10
                      transition-all duration-700
                      md:opacity-90 md:scale-95
                      lg:opacity-100 lg:scale-100">
-         <div className="flex flex-row gap-10 mt-10">
+        <div className="flex flex-row gap-10 mt-10">
           <a href="https://t.me/hvdini">
             <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path d="M21.99 2.76a1.49 1.49 0 00-1.58-.12L2.27 9.06a1.5 1.5 0 00-.05 2.75l4.96 1.67 1.85 5.63c.3.94 1.57 1.18 2.11.33l2.32-3.18 4.77 3.51c.84.61 1.9-.2 1.64-1.13L22.02 4.3a1.5 1.5 0 00-.03-1.54zM9.66 14.5l-.95-2.88L18.2 6.33 9.66 14.5z" />
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M21.99 2.76a1.49 1.49 0 00-1.58-.12L2.27 9.06a1.5 1.5 0 00-.05 2.75l4.96 1.67 1.85 5.63c.3.94 1.57 1.18 2.11.33l2.32-3.18 4.77 3.51c.84.61 1.9-.2 1.64-1.13L22.02 4.3a1.5 1.5 0 00-.03-1.54zM9.66 14.5l-.95-2.88L18.2 6.33 9.66 14.5z" />
             </svg>
           </a>
           <a href="https://www.instagram.com/michael.houdini?igsh=dnV1enN6MXkyY3p0&utm_source=qr">
             <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="currentColor"
-            viewBox="0 0 24 24">
-            <path d="M7.75 2h8.5C19.55 2 22 4.45 22 7.75v8.5c0 3.3-2.45 5.75-5.75 5.75h-8.5C4.45 22 2 19.55 2 16.25v-8.5C2 4.45 4.45 2 7.75 2zm0 1.5C5.68 3.5 4 5.18 4 7.25v9.5C4 18.32 5.68 20 7.75 20h8.5c2.07 0 3.75-1.68 3.75-3.75v-9.5C20 5.68 18.32 3.5 16.25 3.5h-8.5zM12 7a5 5 0 110 10 5 5 0 010-10zm0 1.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7zm4.75-.88a1.12 1.12 0 110 2.24 1.12 1.12 0 010-2.24z" />
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="currentColor"
+              viewBox="0 0 24 24">
+              <path d="M7.75 2h8.5C19.55 2 22 4.45 22 7.75v8.5c0 3.3-2.45 5.75-5.75 5.75h-8.5C4.45 22 2 19.55 2 16.25v-8.5C2 4.45 4.45 2 7.75 2zm0 1.5C5.68 3.5 4 5.18 4 7.25v9.5C4 18.32 5.68 20 7.75 20h8.5c2.07 0 3.75-1.68 3.75-3.75v-9.5C20 5.68 18.32 3.5 16.25 3.5h-8.5zM12 7a5 5 0 110 10 5 5 0 010-10zm0 1.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7zm4.75-.88a1.12 1.12 0 110 2.24 1.12 1.12 0 010-2.24z" />
             </svg>
           </a>
         </div>
