@@ -1,5 +1,5 @@
 import { useEffect, useState,} from "react"
-import { X } from 'lucide-react'
+import { X, ChevronDown, Loader2, Calculator, FileText, Send, Check } from 'lucide-react'
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
@@ -43,7 +43,6 @@ export const Services = ({title, descrip, btn}) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
 
-  // Определяем схему в зависимости от типа формы
   const getSchema = () => {
     switch(formType) {
       case 'смета': return estimateSchema
@@ -57,43 +56,30 @@ export const Services = ({title, descrip, btn}) => {
   let savedScrollY = 0;
   
   if (isModalOpen) {
-    // 1. Сохраняем текущую позицию скролла
     savedScrollY = window.scrollY;
-    
-    // 2. Применяем fixed positioning с отрицательным top
     document.body.style.position = 'fixed';
     document.body.style.top = `-${savedScrollY}px`;
     document.body.style.width = '100%';
     document.body.style.overflow = 'hidden';
-    
-    // 3. НЕ уничтожаем Lenis, только останавливаем
     if (window.lenis && window.lenis.stop) {
       window.lenis.stop();
-      // Сохраняем ссылку на остановленный Lenis
       window._pausedLenis = window.lenis;
     }
-    
-    // 4. Пауза анимаций GSAP
     if (gsap && gsap.globalTimeline) {
       gsap.globalTimeline.pause();
     }
     
     return () => {
-      // 5. Восстанавливаем позицию скролла
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
       document.body.style.overflow = '';
       
-      // 6. Возвращаемся к сохраненной позиции
       window.scrollTo(0, savedScrollY);
       
-      // 7. Возобновляем анимации GSAP
       if (gsap && gsap.globalTimeline) {
         gsap.globalTimeline.resume();
       }
-      
-      // 8. Возобновляем Lenis если он был остановлен
       if (window._pausedLenis && window._pausedLenis.start) {
         window._pausedLenis.start();
         delete window._pausedLenis;
@@ -159,8 +145,6 @@ export const Services = ({title, descrip, btn}) => {
     },
     message: data.message
   })
-
-  // Проверка, что объекты не пустые
   const areAllFieldsFilled = (obj) => {
     const checkObject = (obj) => {
       for (let key in obj) {
@@ -281,252 +265,286 @@ export const Services = ({title, descrip, btn}) => {
   )
 
   return (
-    <div className="border-b border-black border-t py-1 px-2 w-full max-w-xl mx-auto bg-white relative">
-      <div className="mb-2">
-        <h3 className="text-2xl font-semibold text-gray-800">{title}</h3>
-      </div>
-      <div className="mb-3">
-        <p className="text-gray-600">{descrip}</p>
-      </div>
-      <div className="flex flex-wrap gap-3">
-        {btn.map((buttonName) => (
-          <button
-            key={buttonName}
-            className="px-5 py-3 bg-white text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-all hover:border-gray-400 active:scale-95"
-            onClick={() => handleButtonClick(buttonName)}
-          >
-            {buttonName === 'смета' && '📊 '}
-            {buttonName === 'бриф' && '📝 '}
-            {buttonName === 'связь' && '📞 '}
-            {buttonName}
-          </button>
-        ))}
-      </div>
-      {isModalOpen && (
-        <>
+  <div className="border-b border-black border-t py-1 px-2 w-full max-w-xl mx-auto bg-white relative">
+    <div className="mb-2">
+      <h3 className="text-2xl font-semibold text-gray-800">{title}</h3>
+    </div>
+    <div className="mb-3">
+      <p className="text-gray-600">{descrip}</p>
+    </div>
+    <div className="flex flex-wrap gap-3">
+      {btn.map((buttonName) => (
+        <button
+          key={buttonName}
+          className="px-4 py-2 text-sm sm:px-5 sm:py-3 bg-white text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-all hover:border-gray-400 active:scale-95"
+          onClick={() => handleButtonClick(buttonName)}
+        >
+          {buttonName}
+        </button>
+      ))}
+    </div>
+    
+    {isModalOpen && (
+      <>
+        <div 
+          className="fixed inset-0 bg-black/95 z-50 backdrop-blur-sm transition-opacity duration-300"
+          onClick={() => !isSubmitting && setIsModalOpen(false)}
+        />
+        <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-0 sm:p-4">
           <div 
-            className="fixed inset-0 bg-black/92 z-50 backdrop-blur-sm"
-            onClick={() => !isSubmitting && setIsModalOpen(false)}
-          />
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div 
-              className="bg-white rounded-2xl w-full max-w-xl max-h-[86vh] overflow-y-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="sticky top-0 bg-white border-b p-6 flex justify-between items-center rounded-t-2xl">
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-800">
-                    {formType === 'смета' && '📊 Запрос сметы'}
-                    {formType === 'бриф' && '📝 Заполнение брифа'}
-                    {formType === 'связь' && '📞 Связаться с нами'}
+            className="bg-white w-full h-full sm:h-auto sm:rounded-3xl sm:max-w-xl sm:shadow-2xl flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="border-b p-4 sm:p-6 flex-shrink-0">
+              <div className="flex justify-between items-center">
+                <div className="pr-2">
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
+                    {formType === 'смета' && 'Запрос сметы'}
+                    {formType === 'бриф' && 'Заполнение брифа'}
+                    {formType === 'связь' && 'Связаться с нами'}
                   </h3>
-                  <p className="text-gray-600 mt-1">
-                    {formType === 'смета' && 'Получите детальный расчет стоимости проекта'}
-                    {formType === 'бриф' && 'Опишите детали проекта для понимания задачи'}
+                  <p className="text-gray-600 text-xs sm:text-sm mt-1">
+                    {formType === 'смета' && 'Получите расчет стоимости проекта'}
+                    {formType === 'бриф' && 'Опишите детали проекта'}
                     {formType === 'связь' && 'Задайте вопрос или обсудите сотрудничество'}
                   </p>
                 </div>
                 
                 <button
                   onClick={() => !isSubmitting && setIsModalOpen(false)}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  className="w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-full transition-colors flex-shrink-0"
                   disabled={isSubmitting}
                 >
-                  <X size={24} />
+                  <X size={20} className="text-gray-500" />
                 </button>
               </div>
-              {submitSuccess && (
-                <div className="p-4 bg-green-50 border-b border-green-200 text-green-700">
-                  ✅ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.
-                </div>
-              )}
-              <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block mb-2 font-medium text-gray-700">
-                      Ваше имя *
-                    </label>
-                    <input
-                      type="text"
-                      {...register('name')}
-                      className={`w-full p-3 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-black focus:border-black`}
-                      placeholder="Иван Иванов"
-                      disabled={isSubmitting}
-                    />
-                    {errors.name && <ErrorMessage message={errors.name.message} />}
+            </div>
+            
+            {/* Уведомление об успешной отправке */}
+            {submitSuccess && (
+              <div className="px-4 sm:px-6 py-3 bg-green-50 border-y border-green-200 flex-shrink-0">
+                <p className="text-green-700 font-medium text-sm">Заявка успешно отправлена!</p>
+                <p className="text-green-600 text-xs">Мы свяжемся с вами в ближайшее время</p>
+              </div>
+            )}
+            
+            {/* Форма с прокруткой только на мобильных */}
+            <div className="flex-1 overflow-y-auto">
+              <form onSubmit={handleSubmit(onSubmit)} className="p-4 sm:p-6">
+                <div className="space-y-4 sm:space-y-6">
+                  {/* Базовые поля - имя и контакт */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div className="space-y-1">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Ваше имя <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        {...register('name')}
+                        className={`w-full py-2 text-sm sm:text-base border-0 border-b border-gray-300 focus:border-black focus:outline-none focus:ring-0 transition-colors ${errors.name ? 'border-red-500' : ''}`}
+                        placeholder="Иван Иванов"
+                        disabled={isSubmitting}
+                      />
+                      {errors.name && (
+                        <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+                      )}
+                    </div>
+                    
+                    <div className="space-y-1">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Контакт для связи <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        {...register('contact')}
+                        className={`w-full py-2 text-sm sm:text-base border-0 border-b border-gray-300 focus:border-black focus:outline-none focus:ring-0 transition-colors ${errors.contact ? 'border-red-500' : ''}`}
+                        placeholder="Телефон, email или Telegram"
+                        disabled={isSubmitting}
+                      />
+                      {errors.contact && (
+                        <p className="text-red-500 text-xs mt-1">{errors.contact.message}</p>
+                      )}
+                    </div>
                   </div>
                   
-                  <div>
-                    <label className="block mb-2 font-medium text-gray-700">
-                      Контакт для связи *
-                    </label>
-                    <input
-                      type="text"
-                      {...register('contact')}
-                      className={`w-full p-3 border ${errors.contact ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-black focus:border-black`}
-                      placeholder="Телефон, email или Telegram"
-                      disabled={isSubmitting}
-                    />
-                    {errors.contact && <ErrorMessage message={errors.contact.message} />}
-                  </div>
-                </div>
-                {formType === 'смета' && (
-                  <>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block mb-2 font-medium text-gray-700">
-                          Тип проекта *
-                        </label>
-                        <select
-                          {...register('projectType')}
-                          className={`w-full p-3 border ${errors.projectType ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-black focus:border-black`}
-                          disabled={isSubmitting}
-                        >
-                          <option value="">Выберите тип</option>
-                          <option value="music_video">Музыкальный клип</option>
-                          <option value="advertising">Рекламный ролик</option>
-                          <option value="corporate">Корпоративное видео</option>
-                          <option value="event">Съемка мероприятия</option>
-                          <option value="animation">Анимация/Моушн</option>
-                          <option value="other">Другое</option>
-                        </select>
-                        {errors.projectType && <ErrorMessage message={errors.projectType.message} />}
+                  {/* Специфичные поля для каждого типа формы */}
+                  {formType === 'смета' && (
+                    <div className="space-y-4 sm:space-y-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                        <div className="space-y-1">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Тип проекта <span className="text-red-500">*</span>
+                          </label>
+                          <select
+                            {...register('projectType')}
+                            className={`w-full py-2 text-sm sm:text-base border-0 border-b border-gray-300 focus:border-black focus:outline-none focus:ring-0 appearance-none transition-colors ${errors.projectType ? 'border-red-500' : ''}`}
+                            disabled={isSubmitting}
+                          >
+                            <option value="">Выберите тип проекта</option>
+                            <option value="music_video">Музыкальный клип</option>
+                            <option value="advertising">Рекламный ролик</option>
+                            <option value="corporate">Корпоративное видео</option>
+                            <option value="event">Съемка мероприятия</option>
+                            <option value="animation">Анимация/Моушн</option>
+                            <option value="other">Другое</option>
+                          </select>
+                          {errors.projectType && (
+                            <p className="text-red-500 text-xs mt-1">{errors.projectType.message}</p>
+                          )}
+                        </div>
+                        
+                        <div className="space-y-1">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Примерный бюджет (руб.) <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="number"
+                            {...register('budget')}
+                            className={`w-full py-2 text-sm sm:text-base border-0 border-b border-gray-300 focus:border-black focus:outline-none focus:ring-0 transition-colors ${errors.budget ? 'border-red-500' : ''}`}
+                            placeholder="Например: 50000"
+                            min="0"
+                            disabled={isSubmitting}
+                          />
+                          {errors.budget && (
+                            <p className="text-red-500 text-xs mt-1">{errors.budget.message}</p>
+                          )}
+                        </div>
                       </div>
                       
-                      <div>
-                        <label className="block mb-2 font-medium text-gray-700">
-                          Примерный бюджет (руб.) *
+                      <div className="space-y-1">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Желаемые сроки <span className="text-red-500">*</span>
                         </label>
-                        <input
-                          type="number"
-                          {...register('budget')}
-                          className={`w-full p-3 border ${errors.budget ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-black focus:border-black`}
-                          placeholder="Например: 50000"
-                          min="0"
+                        <select
+                          {...register('deadline')}
+                          className={`w-full py-2 text-sm sm:text-base border-0 border-b border-gray-300 focus:border-black focus:outline-none focus:ring-0 appearance-none transition-colors ${errors.deadline ? 'border-red-500' : ''}`}
+                          disabled={isSubmitting}
+                        >
+                          <option value="">Выберите сроки реализации</option>
+                          <option value="urgent">Срочно (1-2 недели)</option>
+                          <option value="1_month">В течение месяца</option>
+                          <option value="1_3_months">1-3 месяца</option>
+                          <option value="3_6_months">3-6 месяцев</option>
+                          <option value="flexible">Гибкие сроки</option>
+                        </select>
+                        {errors.deadline && (
+                          <p className="text-red-500 text-xs mt-1">{errors.deadline.message}</p>
+                        )}
+                      </div>
+                      
+                      <div className="space-y-1">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Детали проекта <span className="text-red-500">*</span>
+                        </label>
+                        <textarea
+                          {...register('projectDetails')}
+                          className={`w-full py-2 text-sm sm:text-base border-0 border-b border-gray-300 focus:border-black focus:outline-none focus:ring-0 resize-none transition-colors ${errors.projectDetails ? 'border-red-500' : ''}`}
+                          rows={2}
+                          placeholder="Опишите подробно проект..."
                           disabled={isSubmitting}
                         />
-                        {errors.budget && <ErrorMessage message={errors.budget.message} />}
+                        {errors.projectDetails && (
+                          <p className="text-red-500 text-xs mt-1">{errors.projectDetails.message}</p>
+                        )}
                       </div>
                     </div>
-                    
-                    <div>
-                      <label className="block mb-2 font-medium text-gray-700">
-                        Желаемые сроки *
-                      </label>
-                      <select
-                        {...register('deadline')}
-                        className={`w-full p-3 border ${errors.deadline ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-black focus:border-black`}
-                        disabled={isSubmitting}
-                      >
-                        <option value="">Выберите срок</option>
-                        <option value="urgent">Срочно (1-2 недели)</option>
-                        <option value="1_month">В течение месяца</option>
-                        <option value="1_3_months">1-3 месяца</option>
-                        <option value="3_6_months">3-6 месяцев</option>
-                        <option value="flexible">Гибкие сроки</option>
-                      </select>
-                      {errors.deadline && <ErrorMessage message={errors.deadline.message} />}
+                  )}
+                  
+                  {formType === 'бриф' && (
+                    <div className="space-y-4 sm:space-y-6">
+                      <div className="space-y-1">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Тип брифа <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          {...register('briefType')}
+                          className={`w-full py-2 text-sm sm:text-base border-0 border-b border-gray-300 focus:border-black focus:outline-none focus:ring-0 appearance-none transition-colors ${errors.briefType ? 'border-red-500' : ''}`}
+                          disabled={isSubmitting}
+                        >
+                          <option value="">Выберите тип брифа</option>
+                          <option value="video_brief">Бриф на видеопродакшн</option>
+                          <option value="creative_brief">Креативный бриф</option>
+                          <option value="technical_brief">Технический бриф</option>
+                          <option value="full_brief">Полный бриф (все этапы)</option>
+                        </select>
+                        {errors.briefType && (
+                          <p className="text-red-500 text-xs mt-1">{errors.briefType.message}</p>
+                        )}
+                      </div>
+                      
+                      <div className="space-y-1">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Детали проекта <span className="text-red-500">*</span>
+                        </label>
+                        <textarea
+                          {...register('projectDetails')}
+                          className={`w-full py-2 text-sm sm:text-base border-0 border-b border-gray-300 focus:border-black focus:outline-none focus:ring-0 resize-none transition-colors ${errors.projectDetails ? 'border-red-500' : ''}`}
+                          rows={2}
+                          placeholder="Опишите детали проекта..."
+                          disabled={isSubmitting}
+                        />
+                        {errors.projectDetails && (
+                          <p className="text-red-500 text-xs mt-1">{errors.projectDetails.message}</p>
+                        )}
+                      </div>
                     </div>
-                    
-                    <div>
-                      <label className="block mb-2 font-medium text-gray-700">
-                        Детали проекта *
-                      </label>
-                      <textarea
-                        {...register('projectDetails')}
-                        className={`w-full p-3 border ${errors.projectDetails ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-black focus:border-black`}
-                        rows="5"
-                        placeholder="Опишите подробно проект..."
-                        disabled={isSubmitting}
-                      />
-                      {errors.projectDetails && <ErrorMessage message={errors.projectDetails.message} />}
-                    </div>
-                  </>
-                )}
-                {formType === 'бриф' && (
-                  <>
-                    <div>
-                      <label className="block mb-2 font-medium text-gray-700">
-                        Тип брифа *
-                      </label>
-                      <select
-                        {...register('briefType')}
-                        className={`w-full p-3 border ${errors.briefType ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-black focus:border-black`}
-                        disabled={isSubmitting}
-                      >
-                        <option value="">Выберите тип</option>
-                        <option value="video_brief">Бриф на видеопродакшн</option>
-                        <option value="creative_brief">Креативный бриф</option>
-                        <option value="technical_brief">Технический бриф</option>
-                        <option value="full_brief">Полный бриф (все этапы)</option>
-                      </select>
-                      {errors.briefType && <ErrorMessage message={errors.briefType.message} />}
-                    </div>
-                    
-                    <div>
-                      <label className="block mb-2 font-medium text-gray-700">
-                        Детали проекта *
+                  )}
+                  
+                  {formType === 'связь' && (
+                    <div className="space-y-1">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Ваше сообщение <span className="text-red-500">*</span>
                       </label>
                       <textarea
-                        {...register('projectDetails')}
-                        className={`w-full p-3 border ${errors.projectDetails ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-black focus:border-black`}
-                        rows="6"
-                        placeholder="Опишите детали проекта..."
+                        {...register('message')}
+                        className={`w-full py-2 text-sm sm:text-base border-0 border-b border-gray-300 focus:border-black focus:outline-none focus:ring-0 resize-none transition-colors ${errors.message ? 'border-red-500' : ''}`}
+                        rows={2}
+                        placeholder="Напишите, по какому вопросу хотите связаться..."
                         disabled={isSubmitting}
                       />
-                      {errors.projectDetails && <ErrorMessage message={errors.projectDetails.message} />}
+                      {errors.message && (
+                        <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>
+                      )}
                     </div>
-                  </>
-                )}
-                {formType === 'связь' && (
-                  <div>
-                    <label className="block mb-2 font-medium text-gray-700">
-                      Ваше сообщение *
-                    </label>
-                    <textarea
-                      {...register('message')}
-                      className={`w-full p-3 border ${errors.message ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-2 focus:ring-black focus:border-black`}
-                      rows="4"
-                      placeholder="Напишите, по какому вопросу хотите связаться..."
-                      disabled={isSubmitting}
-                    />
-                    {errors.message && <ErrorMessage message={errors.message.message} />}
-                  </div>
-                )}
-                <div className="sticky bottom-0 bg-white pt-6 border-t">
+                  )}
+                </div>
+                
+                {/* Кнопки отправки - прикреплены к низу на мобильных */}
+                <div className="pt-6 mt-6 border-t border-gray-100 space-y-4">
                   <div className="flex flex-col sm:flex-row gap-3">
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="flex-1 bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition-colors font-medium text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 bg-black text-white py-3 text-sm sm:text-base rounded-lg hover:bg-gray-800 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isSubmitting ? 'Отправка...' : 
-                       formType === 'смета' ? '📋 Получить расчет сметы' :
-                       formType === 'бриф' ? '📄 Отправить бриф' :
-                       '📨 Отправить сообщение'}
+                       formType === 'смета' ? 'Получить расчет сметы' :
+                       formType === 'бриф' ? 'Отправить бриф' :
+                       'Отправить сообщение'}
                     </button>
                     
                     <button
                       type="button"
                       onClick={() => !isSubmitting && setIsModalOpen(false)}
                       disabled={isSubmitting}
-                      className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                      className="px-4 sm:px-6 py-3 text-sm sm:text-base border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium disabled:opacity-50"
                     >
                       Отмена
                     </button>
                   </div>
                   
-                  <p className="text-xs text-gray-500 text-center mt-3">
+                  <p className="text-xs text-gray-500 text-center">
                     {formType === 'смета' && 'Расчет сметы будет готов в течение 24 часов'}
-                    {formType === 'бриф' && 'Мы свяжемся для обсуждения деталей'}
+                    {formType === 'бриф' && 'Мы свяжемся для обсуждения деталей в течение 2 часов'}
                     {formType === 'связь' && 'Ответим в течение 2 часов в рабочее время'}
                   </p>
                 </div>
               </form>
             </div>
           </div>
-        </>
-      )}
-    </div>
-  )
+        </div>
+      </>
+    )}
+  </div>
+)
 }
