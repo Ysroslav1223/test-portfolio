@@ -8,6 +8,27 @@
   scrollbar-width: none;
 }
 
+/* Stack sections: fixed viewport, inner content scrolls via scrub */
+[data-stack-section].stack-viewport {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+@media (max-width: 768px) {
+  [data-stack-section].stack-viewport {
+    height: 100dvh;
+  }
+}
+.stack-section-inner {
+  min-height: 100%;
+  will-change: transform;
+}
+@media (max-width: 768px) {
+  .stack-section-inner {
+    padding-bottom: 40vh;
+  }
+}
+
 @font-face {
   font-family: 'FirstFonts';
   src: url('../public//fonts/Wosker\ Demo.otf') format('woff2');
