@@ -33,7 +33,7 @@ export default function Carousel({ tracks }) {
 
   return (
     <div className="relative max-w-[260px] sm:max-w-[300px] md:max-w-none mx-auto">
-      <div className="border border-white/30 rounded-lg md:rounded-xl p-0.5 md:p-2 bg-black/10">
+      <div className="border border-white/30 rounded-lg md:rounded-xl p-0.5 md:p-2 bg-transparent">
         <div
           ref={scrollContainerRef}
           className="w-full overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth"

@@ -340,7 +340,13 @@ function ModalForm({ formType, onClose, onSuccess }) {
   )
 }
 
-export const Services = ({ title, descrip, btn }) => {
+const BTN_LABELS = {
+  смета: 'Смета',
+  бриф: 'Бриф',
+  связь: 'Связаться',
+}
+
+export const Services = ({ services, btn }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [formType, setFormType] = useState('смета')
   const [submitSuccess, setSubmitSuccess] = useState(false)
@@ -362,26 +368,43 @@ export const Services = ({ title, descrip, btn }) => {
 
   const closeModal = () => setIsModalOpen(false)
 
+  const actions = (btn || []).filter((name) => BTN_LABELS[name])
+  const list = Array.isArray(services) && services.length ? services : []
+
   return (
-    <div className="w-full max-w-xl mx-auto">
-      <div className="mb-3">
-        <h3 className="text-2xl font-semibold text-gray-800">{title}</h3>
-      </div>
-      <div className="mb-4">
-        <p className="text-gray-600">{descrip}</p>
-      </div>
-      <div className="flex flex-wrap gap-3">
-        {btn.map((name) => (
-          <button
-            key={name}
-            type="button"
-            onClick={() => openModal(name)}
-            className="px-5 py-2.5 text-sm font-medium bg-white text-gray-800 border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all active:scale-[0.98]"
-          >
-            {name}
-          </button>
-        ))}
-      </div>
+    <div className="w-full max-w-4xl mx-auto flex flex-col gap-0 border-t border-[#2C3E50]/30 gap-2">
+      {list.map((item, index) => (
+        <div
+          key={item.id ?? index}
+          className="bg-[#F2E5D4] px-8 py-10 sm:px-12 sm:py-14 border-b border-[#2C3E50]/30 last:border-b-0"
+        >
+          {item.title && (
+            <h4
+              className="text-3xl sm:text-4xl font-serif font-bold text-[#2C3E50] uppercase tracking-tight mb-4"
+              style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+            >
+              {item.title}
+            </h4>
+          )}
+          {item.descrip && (
+            <p className="text-[#5a5a5a] text-base sm:text-lg mb-10 max-w-2xl leading-relaxed">
+              {item.descrip}
+            </p>
+          )}
+          <div className="flex flex-row flex-wrap items-center gap-6">
+            {actions.map((name) => (
+              <button
+                key={name}
+                type="button"
+                onClick={() => openModal(name)}
+                className="text-[#2C3E50] font-serif font-medium hover:opacity-90 transition-opacity"
+              >
+                {BTN_LABELS[name]}
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
 
       {isModalOpen && createPortal(
         <div

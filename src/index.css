@@ -1,5 +1,37 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+  background-color: #131212;
+}
+
+/* Мобильная версия: один свайп вверх — одна секция на весь экран (scroll-snap) */
+@media (max-width: 768px) {
+  html, body {
+    overflow: hidden;
+    height: 100%;
+  }
+  .mobile-snap-scroll {
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mobile-snap-scroll > section {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -8,24 +40,28 @@
   scrollbar-width: none;
 }
 
-/* Stack sections: fixed viewport, inner content scrolls via scrub */
-[data-stack-section].stack-viewport {
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
+/* Плавные переходы для интерактивных элементов */
+a, button {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+a:hover, button:hover {
+  opacity: 0.85;
+}
+a:active, button:active {
+  transform: scale(0.98);
+}
+
+/* Секции — отступы, контент поверх фоновой линии */
+.section-flow {
+  position: relative;
+  z-index: 1;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 @media (max-width: 768px) {
-  [data-stack-section].stack-viewport {
-    height: 100dvh;
-  }
-}
-.stack-section-inner {
-  min-height: 100%;
-  will-change: transform;
-}
-@media (max-width: 768px) {
-  .stack-section-inner {
-    padding-bottom: 40vh;
+  .section-flow {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 }
 
@@ -58,4 +94,32 @@
   src: url('../public/fonts/Poppins-ExtraLight.ttf') format('woff2');
   font-weight: 400;
   font-style: normal;
+}
+
+/* Анимация рисования SVG-линии (петля: карандаш, stroke-dasharray) — цвет как у «Портфолио» */
+.draw-line-path {
+  stroke: #FDF4E3;
+  stroke-width: 0.35px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  opacity: 0.55;
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: drawLineLoop 8s ease-in-out forwards;
+}
+
+@keyframes drawLineLoop {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Линия в Портфолио: анимация только после появления секции во viewport */
+.draw-line-path-wait-view {
+  animation: none;
+  stroke-dashoffset: 1200;
+}
+.draw-line-path-wait-view.draw-line-path-animate {
+  animation: drawLineLoop 8s ease-in-out forwards;
 }

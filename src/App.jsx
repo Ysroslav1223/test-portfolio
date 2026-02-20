@@ -1,5 +1,7 @@
-import { motion,AnimatePresence,  } from "framer-motion"
-import { useRef,useState,useEffect } from "react"
+import { motion, useInView } from "framer-motion"
+import { useState, useRef } from "react"
+import { viewportDefault, viewportSectionVisible, staggerContainer, staggerItem, staggerContainerSlow, staggerItemSlow } from "./lib/motionVariants"
+import { AnimatedText } from "./components/AnimatedText/AnimatedText"
 import trackData from '../track.json'
 import data from '../question-anwser.json'
 import tracksNotRealized from '../unreleasedTrack.json'
@@ -8,100 +10,20 @@ import { Social } from "./components/social/social"
 import { UnreleasedList } from "./components/unreleasedList/unreleasedList"
 import Iam from '../public/images/micha.jpg'
 import secondImg from '../public/images/four.png'
-import fon from '../public/images/fon3.png'
-import fon2 from '../public/images/fon2.png'
 import { Services } from "./components/services/services"
 import 'react-phone-input-2/lib/style.css'
 
 
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
-
-const STACK_SELECTOR = "[data-stack-section]";
-
 function App() {
-  const mainRef = useRef(null);
-
-  useEffect(() => {
-    const container = mainRef.current;
-    if (!container) return;
-
-    const setupStack = () => {
-      const sections = Array.from(container.querySelectorAll(STACK_SELECTOR));
-
-      sections.forEach((section) => {
-        const inner = section.querySelector(".stack-section-inner");
-        if (!inner) return;
-
-        const getScrollEnd = () => {
-          const base = inner.offsetHeight;
-          if (window.innerWidth < 768) {
-            return base + Math.max(300, base * 0.5);
-          }
-          return base + (base * 0.15);
-        };
-        const getContentDelta = () =>
-          -(inner.offsetHeight - section.offsetHeight);
-
-        ScrollTrigger.create({
-          trigger: section,
-          start: "top top",
-          end: () => `+=${getScrollEnd()}`,
-          pin: true,
-          pinSpacing: false,
-        });
-
-        if (inner.offsetHeight > section.offsetHeight) {
-          gsap.fromTo(
-            inner,
-            { y: 0 },
-            {
-              y: getContentDelta,
-              ease: "none",
-              scrollTrigger: {
-                trigger: section,
-                start: "top top",
-                end: () => `+=${getScrollEnd()}`,
-                scrub: true,
-              },
-            }
-          );
-        }
-      });
-    };
-
-    setupStack();
-
-    const sections = Array.from(container.querySelectorAll(STACK_SELECTOR));
-    const ro = new ResizeObserver(() => {
-      ScrollTrigger.refresh();
-    });
-    sections.forEach((s) => {
-      const inner = s.querySelector(".stack-section-inner");
-      if (inner) ro.observe(inner);
-    });
-
-    const timer = setTimeout(() => ScrollTrigger.refresh(), 500);
-    const onLoad = () => ScrollTrigger.refresh();
-    window.addEventListener("load", onLoad);
-
-    return () => {
-      ro.disconnect();
-      clearTimeout(timer);
-      window.removeEventListener("load", onLoad);
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
-  }, []);
-
-
-
-   
-
     console.log(data.questionAnswer);
-
-    const[answer,setAnswer]=useState(null)
+    const mainRef = useRef(null);
+    const aboutSectionRef = useRef(null);
+    const portfolioSectionRef = useRef(null);
+    const unreleasedSectionRef = useRef(null);
+    const isAboutInView = useInView(aboutSectionRef, { once: true, amount: 0.2 });
+    const isPortfolioInView = useInView(portfolioSectionRef, { once: true, amount: 0.2 });
+    const isUnreleasedInView = useInView(unreleasedSectionRef, { once: true, amount: 0.2 });
+    const [answer, setAnswer] = useState(null)
 
     const handleAnswer=(index)=>{
      setAnswer(answer===index?null:index)
@@ -110,13 +32,9 @@ function App() {
 
 
   return (
-      <div className="relative" ref={mainRef}>
-        <section
-          className="stack-viewport relative"
-          data-stack-section
-        >
-          <div className="stack-section-inner flex flex-col min-h-full md:flex-row md:min-h-screen">
- 
+      <div ref={mainRef} className="relative overflow-x-hidden bg-[#131212] mobile-snap-scroll">
+        {/* Hero — анимация при загрузке */}
+        <section className="relative flex flex-col min-h-full md:flex-row md:min-h-screen">
     <div 
       className="
         relative w-full h-[50vh] md:w-1/2 md:h-screen 
@@ -130,20 +48,20 @@ function App() {
       <div className="absolute inset-0 bg-black/40 md:bg-black/20"></div>
       <div className="hidden md:flex text-[#F8F8FF] z-10 absolute left-8 bottom-8 md:left-10 md:bottom-10 lg:left-12 lg:bottom-12 xl:left-20 xl:bottom-16">
         <div className="text-left">
-          <h2 className="text-4xl md:text-5xl lg:text-7xl xl:text-8xl mb-2 md:mb-3 lg:mb-4 whitespace-nowrap" style={{fontFamily:'EightFonts,sans-serif'}}>
-            Michael Houdini
+          <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-2 md:mb-3 lg:mb-4 min-w-0 break-words" style={{fontFamily:'EightFonts,sans-serif'}}>
+            <AnimatedText text="Michael Houdini" useAnimate />
           </h2>
           <h3 className="text-xl md:text-2xl lg:text-4xl xl:text-6xl" style={{fontFamily:'SecondFonts,sans-serif'}}>
-            producer
+            <AnimatedText text="producer" useAnimate />
           </h3>
         </div>
       </div>
       <div className="md:hidden text-end flex flex-col justify-end items-center text-[#F8F8FF] z-10 relative">
         <h2 className="text-3xl mb-2" style={{fontFamily:'EightFonts,sans-serif'}}>
-          Michael Houdini
+          <AnimatedText text="Michael Houdini" useAnimate />
         </h2>
         <h3 className="text-xl" style={{fontFamily:'SecondFonts,sans-serif'}}>
-          producer
+          <AnimatedText text="producer" useAnimate />
         </h3>
       </div>
     </div>
@@ -160,10 +78,12 @@ function App() {
     >
       <div className="absolute inset-0 bg-black/40 md:bg-black/40"></div>
       
-      <div className="text-center font-bold text-[#FDF4E3] max-w-md relative z-10
-                     transition-all duration-700
-                     md:opacity-90 md:scale-95
-                     lg:opacity-100 lg:scale-100">
+      <motion.div
+        className="text-center font-bold text-[#FDF4E3] max-w-md relative z-10"
+        initial={{ opacity: 0, y: 28 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      >
         <div className="flex flex-row gap-10 mt-10">
           <a href="https://t.me/hvdini">
             <svg
@@ -185,22 +105,35 @@ function App() {
             </svg>
           </a>
         </div>
-      </div>
+      </motion.div>
     </div>
-  </div>
         </section>
-    <section
-      className="stack-viewport min-h-screen text-[#F5F5F5] justify-center bg-[#131212] flex relative -mt-12 rounded-t-[40px]"
-      data-stack-section
-    >
-      <div className="stack-section-inner w-full flex flex-col justify-start px-8 pt-15 pb-20">
-        <div className="text-bold text-3xl sm:text-3xl text-center pb-10" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>
-             <h2>Обо мне</h2>
+
+    {/* Обо мне — линия + буквы + контент */}
+    <section ref={aboutSectionRef} className="section-flow relative min-h-screen text-[#F5F5F5] justify-center bg-[#131212] flex flex-col">
+      {/* Фоновая SVG-линия: рисуется при появлении секции в зоне видимости */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <svg className="absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path
+            className={`draw-line-path draw-line-path-wait-view ${isAboutInView ? 'draw-line-path-animate' : ''}`}
+            d="M 0 5
+               C 55 2, 100 48, 100 95"
+          />
+        </svg>
+      </div>
+      <motion.div
+        className="w-full flex flex-col justify-start px-8 pt-8 pb-20 flex-1 relative z-10"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewportDefault}
+      >
+        <div className="text-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-center pb-4" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>
+          <h2><AnimatedText text="Обо мне" className="inline-block" /></h2>
         </div>
-          <div className="flex items-center justify-center pb-6">
-          {/* <img src='https://images.unsplash.com/photo-1546707012-0c9f63ba29b9' className=""/> */}
+        <div className="flex items-center justify-center pb-6">
         </div>
-        <div className="space-y-4 text-[16px] sm:text-base lg:text-lg text-[#CDCABB] leading-relaxed" style={{fontFamily:'SixFonts,sans-serif',letterSpacing:'2px'}}>
+        <motion.div className="space-y-4 text-[16px] sm:text-base lg:text-lg text-[#CDCABB] leading-relaxed max-w-3xl mx-auto text-center md:text-left" style={{fontFamily:'SixFonts,sans-serif',letterSpacing:'2px'}} variants={staggerItem}>
     <p>
       Меня зовут Миша Гудков, я саунд-продюсер и сонграйтер. Родился и вырос в Москве, учился в музыкальной школе при Московской 
       консерватории по специальности «фортепиано». Музыкой занимаюсь более тринадцати лет из своих 19. Последние шесть лет работаю в продакшене; за последние два года сделал больше 150 песен и поработал над саундтреком к трём сериалам.</p>
@@ -208,163 +141,146 @@ function App() {
 <p>Играю на клавишных, гитаре и перкуссии, уверенно работаю с записью и имею опыт живых выступлений. 
 Преимущественно работаю в жанрах поп, инди, альт-поп и хип-хоп, но также имею опыт в других направлениях. Работал как приглашённый саунд-продюсер с лейблами.</p>
 
-  </div>
-      </div>
-    </section>
-   <section
-      className="stack-viewport min-h-screen items-center flex flex-col rounded-t-[40px] text-white pt-6 pb-6 md:pt-10 md:pb-10"
-      style={{ backgroundImage: `url(${fon2})` }}
-      data-stack-section
-    >
-  <div className="stack-section-inner w-full flex flex-col items-center">
-    <div className="flex flex-col items-center">
-    <AnimatePresence>
-      <motion.div
-        key="portfolio-title"
-        className="text-[#FDF4E3] mb-2 md:mb-4"
-      >
-        <h3 className="text-sm md:text-base md: mt-2">[Портфолио]</h3>
+  </motion.div>
       </motion.div>
-    </AnimatePresence>
-    <div className="mt-6 md: mt-6 text-2xl sm:text-2xl md:text-4xl text-center">
-      <motion.h2 initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }} style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'1.5px'}}>Реализованные проекты</motion.h2>
-    </div>
-    <div className="mt-3 mb-3 md:mt-10 md:mb-6 text-sm md:text-base text-[#D3D3D3]">
-      <p>Листайте вправо</p>
-    </div>
-  </div>
-  <div className="w-[310px] max-w-6xl mx-auto px-1 pb-2 md:px-4 relative flex-shrink-0">
-    <div className="relative overflow-hidden rounded-xl md:rounded-2xl bg-black/20 backdrop-blur-sm py-5 md:p-4">
-      <Carousel tracks={trackData.tracks}/>
-    </div>
-  </div>
-  <div className="mt-4 md:mt-6 flex-shrink-0">
-    <div className="text-start text-base sm:text-lg md:text-2xl w-70 px-2">
-      <h2 style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>Послушать работы <br/>вы можете здесь</h2>
-    </div>
-    <Social/>
-  </div>
-  </div>
-</section>
-       <section
-        className="stack-viewport min-h-screen items-center flex flex-col text-white pt-10 pb-10 bg-cover bg-black rounded-t-[40px] "
-        
-        data-stack-section
-      >
-      <div className="stack-section-inner w-full flex flex-col items-center w-90 bg-[#000000] pb-30">
-        <div className="mt-2 text-4xl text-center pt-6 mb-6">
-          <motion.h2 initial={{ opacity: 0, y: 50 }}
-         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8}} style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>Невыпущенные проекты</motion.h2> 
-        </div>
-        <div className="mt-2 w-full">
-          <UnreleasedList items={tracksNotRealized.tracksNotRealized}/>
-        </div>
-        </div>
-    </section>
-    {/* FAQ — одна секция на desktop (две колонки) */}
-    <section
-      className="stack-viewport min-h-screen bg-[#a39a6f] items-center flex relative -mt-12 flex-col text-white pt-20 pb-20 rounded-t-[40px] hidden md:flex"
-      data-stack-section
-    >
-      <div className="stack-section-inner w-full flex flex-col items-center">
-        <div>
-          <h3 className="font-bold mb-6 text-[#FDF4E3]">[FAQ]</h3>
-        </div>
-        <div className="mt-6 text-4xl text-center">
-          <motion.h2 initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}>Ответы на частые вопросы</motion.h2>
-        </div>
-        <div className="py-10 px-4 md:px-10 w-full max-w-6xl">
-          <div className="grid grid-cols-2 gap-6 md:gap-8">
-            <div className="flex flex-col">
-              {data.questionAnswer.slice(0, 2).map((d, i) => (
-                <div key={d.id} className="border-b border-white border-t">
-                  <div
-                    onClick={() => handleAnswer(i)}
-                    className="flex justify-between items-center py-4 cursor-pointer"
-                  >
-                    <div className="flex-1 pr-4">{d.question}</div>
-                    <div className="w-8 h-8 flex items-center justify-center text-2xl shrink-0">
-                      {answer === i ? "-" : "+"}
-                    </div>
-                  </div>
-                  {answer === i && (
-                    <div className="pb-4 pt-2 border-t border-white">{d.answer}</div>
-                  )}
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-col">
-              {data.questionAnswer.slice(2, 4).map((d, i) => (
-                <div key={d.id} className="border-b border-white border-t">
-                  <div
-                    onClick={() => handleAnswer(i + 2)}
-                    className="flex justify-between items-center py-4 cursor-pointer"
-                  >
-                    <div className="flex-1 pr-4">{d.question}</div>
-                    <div className="w-8 h-8 flex items-center justify-center text-2xl shrink-0">
-                      {answer === i + 2 ? "-" : "+"}
-                    </div>
-                  </div>
-                  {answer === i + 2 && (
-                    <div className="pb-4 pt-2 border-t border-white">{d.answer}</div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
-    {/* FAQ часть 1 — только мобильная, отдельная stack-секция */}
-    <section
-      className="stack-viewport min-h-screen bg-[#a39a6f] items-center flex relative -mt-12 flex-col text-white pt-20 pb-20 rounded-t-[40px] flex md:hidden"
-      data-stack-section
-    >
-      <div className="stack-section-inner w-full flex flex-col items-center">
-        <div>
-          <h3 className="font-bold mb-6 text-[#FDF4E3]">[FAQ]</h3>
+   {/* Портфолио — Реализованные проекты */}
+   <section ref={portfolioSectionRef} className="section-flow relative min-h-screen items-center flex flex-col text-white pt-6 pb-6 md:pt-10 md:pb-10 bg-transparent">
+      {/* Фоновая SVG-линия: рисуется при появлении секции в зоне видимости */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <svg className="absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path
+            className={`draw-line-path draw-line-path-wait-view ${isPortfolioInView ? 'draw-line-path-animate' : ''}`}
+            d="M 100 6
+               C 92 8, 88 18, 82 28
+               C 75 42, 70 50, 72 58
+               C 76 68, 90 62, 85 72
+               C 78 85, 55 88, 38 90
+               C 22 92, 12 94, 0 96"
+          />
+        </svg>
+      </div>
+      <motion.div className="w-full flex flex-col items-center relative z-10" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportDefault}>
+        <div className="font-bold text-[#FDF4E3] mb-2 md:mb-4">
+          <h3 className="text-sm sm:text-base md:text-lg mt-2"><AnimatedText text="[Портфолио]" /></h3>
         </div>
-        <div className="mt-6 text-4xl text-center px-4">
-          <motion.h2 initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}>Ответы на частые вопросы</motion.h2>
+        <motion.div className="mt-6 text-center px-1 min-w-0 overflow-hidden" variants={staggerItem}>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl max-w-full" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'1.5px'}}>
+            <span className="block"><AnimatedText text="Реализованные" /></span>
+            <span className="block"><AnimatedText text="проекты" /></span>
+          </h2>
+        </motion.div>
+        <motion.div className="mt-3 mb-3 md:mt-10 md:mb-6 text-sm md:text-base text-[#D3D3D3]" variants={staggerItem}>
+          <p>Листайте вправо</p>
+        </motion.div>
+        <motion.div className="w-[310px] max-w-6xl mx-auto px-1 pb-2 md:px-4 relative flex-shrink-0" variants={staggerItem}>
+          <div className="relative overflow-hidden rounded-xl md:rounded-2xl backdrop-blur-sm border border-[#2C3E50]/30 py-5 md:p-4">
+            <Carousel tracks={trackData.tracks}/>
+          </div>
+        </motion.div>
+        <motion.div className="mt-4 md:mt-6 flex-shrink-0" variants={staggerItem}>
+          <div className="text-start text-base sm:text-lg md:text-2xl w-70 px-2">
+            <h2 style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>Послушать работы <br/>вы можете здесь</h2>
+          </div>
+          <Social/>
+        </motion.div>
+      </motion.div>
+</section>
+
+       {/* Невыпущенные — полусфера справа сверху влево вниз */}
+       <section ref={unreleasedSectionRef} className="section-flow relative min-h-screen items-center flex flex-col text-white pt-10 pb-4 bg-transparent">
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <svg className="absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path
+            className={`draw-line-path draw-line-path-wait-view ${isUnreleasedInView ? 'draw-line-path-animate' : ''}`}
+            d="M 100 5
+               C 45 2, 0 48, 0 95"
+          />
+        </svg>
+      </div>
+      <motion.div className="w-full flex flex-col items-center md:items-center w-90 bg-transparent pb-30 relative z-10" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportDefault}>
+        <div className="mt-2 text-center pt-6 mb-4 px-2 min-w-0 overflow-hidden">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl max-w-full" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>
+            <span className="block"><AnimatedText text="Невыпущенные" /></span>
+            <span className="block"><AnimatedText text="проекты" /></span>
+          </h2>
         </div>
-        <div className="py-10 px-4 w-full flex flex-col">
+        <motion.div className="mt-2 w-full" variants={staggerItem}>
+          <UnreleasedList items={tracksNotRealized.tracksNotRealized}/>
+        </motion.div>
+        </motion.div>
+    </section>
+
+    {/* FAQ — в стиле секции «Услуги» */}
+    <section className="section-flow min-h-screen items-center  relative px-4 text-[#F5F5F5] pt-10 pb-20 bg-[#131212] ">
+      <motion.div className="w-full flex flex-col items-center" variants={staggerContainerSlow.variants} initial="hidden" whileInView="visible" viewport={viewportSectionVisible}>
+        <div className="font-bold mb-4 text-[#FDF4E3]">
+          <h3 className="text-sm sm:text-base md:text-lg"><AnimatedText text="[FAQ]" /></h3>
+        </div>
+        <motion.div className="mt-6 text-center px-2 min-w-0 overflow-hidden" variants={staggerItemSlow}>
+          <h2 className="text-3xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl max-w-full mb-10" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'1px'}}>Ответы на частые вопросы </h2>
+        </motion.div>
+        <motion.div className="w-full max-w-4xl mx-auto mt-2 border-t border-[#2C3E50]/30 flex flex-col gap-3" variants={staggerItemSlow}>
           {data.questionAnswer.slice(0, 4).map((d, i) => (
-            <div key={d.id} className="border-b border-white border-t">
+            <div
+              key={d.id}
+              className="bg-[#F2E5D4] px-6 py-6 sm:px-10 sm:py-8 border-b border-[#2C3E50]/30 last:border-b-0"
+            >
               <div
                 onClick={() => handleAnswer(i)}
-                className="flex justify-between items-center py-4 cursor-pointer"
+                className="cursor-pointer"
               >
-                <div className="flex-1 pr-4">{d.question}</div>
-                <div className="w-8 h-8 flex items-center justify-center text-2xl shrink-0">
-                  {answer === i ? "-" : "+"}
-                </div>
+                <h4
+                  className="text-xl sm:text-2xl font-serif font-bold text-[#2C3E50] uppercase tracking-tight mb-2 flex justify-between items-start gap-4"
+                  style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+                >
+                  <span className="flex-1">{d.question}</span>
+                  <span className="w-8 h-8 flex items-center justify-center text-2xl shrink-0">
+                    {answer === i ? "−" : "+"}
+                  </span>
+                </h4>
               </div>
               {answer === i && (
-                <div className="pb-4 pt-2 border-t border-white">{d.answer}</div>
+                <p className="text-[#5a5a5a] text-base sm:text-lg max-w-2xl leading-relaxed pt-2 border-t border-[#2C3E50]/20">
+                  {d.answer}
+                </p>
               )}
             </div>
           ))}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
-    <section
-      className="stack-viewport min-h-screen items-center flex relative -mt-12 px-4 flex-col text-black pt-20 pb-20 bg-[#F5F3EF]"
-      data-stack-section
-    >
-      <div className="stack-section-inner w-full flex flex-col items-center">
-       <div>
-        <h3 className="font-bold mb-6 text-black ">[Услуги]</h3>
-      </div>
-      <Services title={'Продакшн'} descrip={'крутая услуга'} btn={['смета','бриф','связь']}/>
-      </div>
+
+    {/* Услуги */}
+    <section className="section-flow min-h-screen items-center flex relative px-4 flex-col text-[#F5F5F5] pt-20 pb-20 bg-[#131212]">
+      <motion.div className="w-full flex flex-col items-center" variants={staggerContainerSlow.variants} initial="hidden" whileInView="visible" viewport={viewportSectionVisible}>
+        <div className="font-bold mb-10 text-[#FDF4E3]">
+          <h3 className="text-sm sm:text-base md:text-lg"><AnimatedText text="[Услуги]" /></h3>
+        </div>
+        <motion.div variants={staggerItemSlow}>
+          <Services
+            services={[
+              {
+                id: 'prod',
+                title: 'Продакшн',
+                descrip: 'Полный цикл видеопродакшна: от идеи до монтажа. Музыкальные клипы, рекламные ролики, корпоративное видео и съёмка мероприятий. Подготовим смету, поможем оформить бриф или обсудим ваш проект.',
+              },
+              {
+                id: 'sound',
+                title: 'Саунд-дизайн и музыка',
+                descrip: 'Звук для видео и рекламы: оригинальная музыка, сведение, саунд-дизайн и озвучка. Адаптируем стиль под бренд и формат проекта.',
+              },
+              {
+                id: 'post',
+                title: 'Монтаж и постпродакшн',
+                descrip: 'Монтаж, цветокоррекция, графика и анимация. Работаем в любых форматах и сжатые сроки. Итог — готовый ролик под публикацию.',
+              },
+            ]}
+            btn={['смета', 'бриф', 'связь']}
+          />
+        </motion.div>
+      </motion.div>
     </section>
     </div>
       
