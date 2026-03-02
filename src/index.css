@@ -123,3 +123,23 @@ a:active, button:active {
 .draw-line-path-wait-view.draw-line-path-animate {
   animation: drawLineLoop 8s ease-in-out forwards;
 }
+
+/* Иконка пластинки в секции «Невыпущенные» — анимация рисования (pathLength=1) */
+.draw-vinyl-path {
+  fill: none;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: drawVinylLoop 2.2s ease-in-out forwards;
+}
+@keyframes drawVinylLoop {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.draw-vinyl-path-wait-view {
+  animation: none;
+  stroke-dashoffset: 1;
+}
+.draw-vinyl-path-wait-view.draw-vinyl-path-animate {
+  animation: drawVinylLoop 2.2s ease-in-out forwards;
+}

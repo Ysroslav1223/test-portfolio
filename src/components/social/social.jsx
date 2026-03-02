@@ -9,7 +9,7 @@ const links = [
 
 export const Social = () => {
   return (
-    <div className="overflow-x-auto mt-8">
+    <div className="overflow-x-auto mt-8 mb-10">
       <table className="min-w-full border-collapse">
         <tbody>
           {links.map((item, i) => (

@@ -54,7 +54,7 @@ export default function Carousel({ tracks }) {
                   className=" aspect-square object-cover"
                 />
                 <div className="p-2 md:p-3 text-black flex-shrink-0 border-t border-black/5">
-                  <h3 className="text-xs md:text-base font-semibold leading-tight line-clamp-2">{item.title}</h3>
+                  <h3 className="text-sm md:text-lg font-semibold leading-tight line-clamp-2">{item.title}</h3>
                   <p className="text-[10px] md:text-sm opacity-70 mt-0.5">{item.year}</p>
                 </div>
               </motion.div>

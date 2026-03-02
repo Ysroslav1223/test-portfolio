@@ -188,14 +188,47 @@ function App() {
       </motion.div>
 </section>
 
-       {/* Невыпущенные — полусфера справа сверху влево вниз */}
+       {/* Невыпущенные — иконка пластинки внизу по центру с анимацией рисования */}
        <section ref={unreleasedSectionRef} className="section-flow relative min-h-screen items-center flex flex-col text-white pt-10 pb-4 bg-transparent">
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        <svg className="absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+      {/* SVG-иконка пластинки (минималистичный line art): position absolute, внизу по центру */}
+      <div
+        className="absolute left-1/2 -translate-x-1/2 bottom-4 md:bottom-6 z-0 pointer-events-none"
+        style={{ width: 'clamp(120px, 28vw, 220px)' }}
+        aria-hidden="true"
+      >
+        <svg
+          className="w-full h-auto block"
+          viewBox="0 0 100 100"
+          fill="none"
+          stroke="#FDF4E3"
+          strokeWidth="1.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{ opacity: 0.55 }}
+        >
+          {/* Внешний круг пластинки */}
           <path
-            className={`draw-line-path draw-line-path-wait-view ${isUnreleasedInView ? 'draw-line-path-animate' : ''}`}
-            d="M 100 5
-               C 45 2, 0 48, 0 95"
+            pathLength="1"
+            className={`draw-vinyl-path draw-vinyl-path-wait-view ${isUnreleasedInView ? 'draw-vinyl-path-animate' : ''}`}
+            d="M 50 8 A 42 42 0 0 1 92 50 A 42 42 0 0 1 50 92 A 42 42 0 0 1 8 50 A 42 42 0 0 1 50 8"
+          />
+          {/* Центр: втулка и отверстие шпинделя (два концентрических круга) */}
+          <path
+            pathLength="1"
+            className={`draw-vinyl-path draw-vinyl-path-wait-view ${isUnreleasedInView ? 'draw-vinyl-path-animate' : ''}`}
+            d="M 50 42 A 8 8 0 0 1 58 50 A 8 8 0 0 1 50 58 A 8 8 0 0 1 42 50 A 8 8 0 0 1 50 42 M 50 47 A 3 3 0 0 1 53 50 A 3 3 0 0 1 50 53 A 3 3 0 0 1 47 50 A 3 3 0 0 1 50 47"
+          />
+          {/* Дорожки: дуги в левом верхнем квадранте (3 дуги, от центра наружу) */}
+          <path
+            pathLength="1"
+            className={`draw-vinyl-path draw-vinyl-path-wait-view ${isUnreleasedInView ? 'draw-vinyl-path-animate' : ''}`}
+            d="M 38.69 38.69 A 16 16 0 0 1 50 34 M 30.2 30.2 A 28 28 0 0 1 50 22 M 23.1 23.1 A 38 38 0 0 1 50 12"
+          />
+          {/* Дорожки: дуги в правом нижнем квадранте (3 дуги, зеркально) */}
+          <path
+            pathLength="1"
+            className={`draw-vinyl-path draw-vinyl-path-wait-view ${isUnreleasedInView ? 'draw-vinyl-path-animate' : ''}`}
+            d="M 61.31 61.31 A 16 16 0 0 1 50 66 M 69.8 69.8 A 28 28 0 0 1 50 78 M 76.9 76.9 A 38 38 0 0 1 50 88"
           />
         </svg>
       </div>
