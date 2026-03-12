@@ -45,13 +45,20 @@ export default function Carousel({ tracks }) {
                 key={index}
                 data-carousel-card
                 className="w-[252px] min-w-[252px] sm:w-[284px] sm:min-w-[284px] md:w-56 md:min-w-0 flex-shrink-0 bg-[#d9d9d9] overflow-hidden shadow-lg snap-start snap-center flex flex-col"
-                transition={{ type: "spring", stiffness: 300 }}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ amount: 0.6, once: true }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                whileTap={{ scale: 0.97 }}
                 onClick={() => scrollToItem(index)}
               >
                 <img
-                  src={item.image}
+                  src={item.image.startsWith('http') ? item.image : `${import.meta.env.BASE_URL}${item.image}`}
                   alt={item.title}
                   className=" aspect-square object-cover"
+                  loading="lazy"
+                  decoding="async"
+                  fetchpriority="low"
                 />
                 <div className="p-2 md:p-3 text-black flex-shrink-0 border-t border-black/5">
                   <h3 className="text-sm md:text-lg font-semibold leading-tight line-clamp-2">{item.title}</h3>

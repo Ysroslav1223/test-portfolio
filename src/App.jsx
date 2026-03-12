@@ -128,12 +128,23 @@ function App() {
         whileInView="visible"
         viewport={viewportDefault}
       >
-        <div className="text-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-center pb-4" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>
+        <div className="text-bold text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl text-center pb-30" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>
           <h2><AnimatedText text="Обо мне" className="inline-block" /></h2>
         </div>
         <div className="flex items-center justify-center pb-6">
         </div>
-        <motion.div className="space-y-4 text-[16px] sm:text-base lg:text-lg text-[#CDCABB] leading-relaxed max-w-3xl mx-auto text-center md:text-left" style={{fontFamily:'SixFonts,sans-serif',letterSpacing:'2px'}} variants={staggerItem}>
+        <div className="w-full mx-auto max-w-6xl md:max-w-7xl md:flex md:items-start md:gap-10 lg:gap-12 md:mt-[90px]">
+          <div className="hidden md:block md:w-[44%] lg:w-[42%] md:-ml-10 lg:-ml-12 md:mt-0">
+            <div className="w-full aspect-video overflow-hidden rounded-2xl border border-[#2C3E50]/30 bg-white/5 backdrop-blur-sm">
+              <img
+                src={Iam}
+                alt="About preview"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </div>
+
+          <motion.div className="space-y-4 text-[16px] sm:text-base md:text-sm lg:text-base text-[#CDCABB] leading-relaxed max-w-3xl mx-auto text-center md:text-justify md:mx-0 md:ml-auto md:mr-0 md:mt-0 md:max-w-none md:w-[56%] md:translate-x-4" style={{fontFamily:'SixFonts,sans-serif',letterSpacing:'2px'}} variants={staggerItem}>
     <p>
       Меня зовут Миша Гудков, я саунд-продюсер и сонграйтер. Родился и вырос в Москве, учился в музыкальной школе при Московской 
       консерватории по специальности «фортепиано». Музыкой занимаюсь более тринадцати лет из своих 19. Последние шесть лет работаю в продакшене; за последние два года сделал больше 150 песен и поработал над саундтреком к трём сериалам.</p>
@@ -142,6 +153,7 @@ function App() {
 Преимущественно работаю в жанрах поп, инди, альт-поп и хип-хоп, но также имею опыт в других направлениях. Работал как приглашённый саунд-продюсер с лейблами.</p>
 
   </motion.div>
+        </div>
       </motion.div>
     </section>
 
@@ -161,77 +173,94 @@ function App() {
           />
         </svg>
       </div>
-      <motion.div className="w-full flex flex-col items-center relative z-10" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportDefault}>
-        <div className="font-bold text-[#FDF4E3] mb-2 md:mb-4">
-          <h3 className="text-sm sm:text-base md:text-lg mt-2"><AnimatedText text="[Портфолио]" /></h3>
-        </div>
-        <motion.div className="mt-6 text-center px-1 min-w-0 overflow-hidden" variants={staggerItem}>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl max-w-full" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'1.5px'}}>
-            <span className="block"><AnimatedText text="Реализованные" /></span>
-            <span className="block"><AnimatedText text="проекты" /></span>
-          </h2>
+      <div className="w-full flex flex-col items-center relative z-10">
+        {/* Заголовки оставляем анимированными */}
+        <motion.div
+          className="w-full flex flex-col items-center"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportDefault}
+        >
+          <div className="font-bold text-[#FDF4E3] mb-2 md:mb-4">
+            <h3 className="text-sm sm:text-base md:text-lg mt-2"><AnimatedText text="[Портфолио]" /></h3>
+          </div>
+          <motion.div className="mt-6 text-center px-1 min-w-0 overflow-hidden md:mb-8" variants={staggerItem}>
+            <h2 className="text-3xl sm:text-4xl md:text-3xl lg:text-4xl xl:text-5xl max-w-full" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'1.5px'}}>
+              <span className="block md:inline"><AnimatedText text="Реализованные" /></span>
+              <span className="block md:inline md:ml-3"><AnimatedText text="проекты" /></span>
+            </h2>
+          </motion.div>
+          <motion.div className="mt-3 mb-3 md:hidden text-sm text-[#D3D3D3]" variants={staggerItem}>
+            <p>Листайте вправо</p>
+          </motion.div>
         </motion.div>
-        <motion.div className="mt-3 mb-3 md:mt-10 md:mb-6 text-sm md:text-base text-[#D3D3D3]" variants={staggerItem}>
-          <p>Листайте вправо</p>
-        </motion.div>
-        <motion.div className="w-[310px] max-w-6xl mx-auto px-1 pb-2 md:px-4 relative flex-shrink-0" variants={staggerItem}>
-          <div className="relative overflow-hidden rounded-xl md:rounded-2xl backdrop-blur-sm border border-[#2C3E50]/30 py-5 md:p-4">
+
+        {/* Обложки без анимации появления (чтобы не лагали при рисовании линии) */}
+        <div className="w-[310px] max-w-6xl mx-auto px-1 pb-2 md:hidden relative flex-shrink-0">
+          <div className="relative overflow-hidden rounded-xl backdrop-blur-sm border border-[#2C3E50]/30 py-5">
             <Carousel tracks={trackData.tracks}/>
           </div>
-        </motion.div>
-        <motion.div className="mt-4 md:mt-6 flex-shrink-0" variants={staggerItem}>
-          <div className="text-start text-base sm:text-lg md:text-2xl w-70 px-2">
-            <h2 style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>Послушать работы <br/>вы можете здесь</h2>
+        </div>
+
+        <div className="hidden md:block w-full max-w-7xl mx-auto px-6 lg:px-10">
+          <div className="relative overflow-hidden rounded-2xl backdrop-blur-sm border border-[#2C3E50]/30 p-5 lg:p-6">
+            <motion.div
+              className="grid grid-cols-4 xl:grid-cols-5 gap-5 lg:gap-6"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportDefault}
+            >
+              {trackData.tracks.map((item, index) => (
+                <motion.div
+                  key={index}
+                  className="bg-[#d9d9d9] overflow-hidden shadow-lg"
+                  style={{ contentVisibility: 'auto', containIntrinsicSize: '320px' }}
+                  variants={staggerItem}
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+                >
+                  <img
+                    src={item.image.startsWith('http') ? item.image : `${import.meta.env.BASE_URL}${item.image}`}
+                    alt={item.title}
+                    className="w-full aspect-square object-cover"
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority="low"
+                  />
+                  <div className="p-3 text-black border-t border-black/5">
+                    <h3 className="text-sm lg:text-base font-semibold leading-tight line-clamp-2">{item.title}</h3>
+                    <p className="text-xs opacity-70 mt-1">{item.year}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
-          <Social/>
+        </div>
+
+        <motion.div
+          className="mt-4 md:mt-15 w-full flex-shrink-0"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportDefault}
+        >
+          <motion.div className="md:max-w-7xl md:mx-auto md:px-6 lg:px-10" variants={staggerItem}>
+            <div className="text-start text-base sm:text-lg md:text-2xl w-70 px-2">
+              <h2 className="md:whitespace-nowrap" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>
+                Послушать работы <br className="md:hidden" />вы можете здесь
+              </h2>
+            </div>
+            <Social/>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
 </section>
 
        {/* Невыпущенные — иконка пластинки внизу по центру с анимацией рисования */}
        <section ref={unreleasedSectionRef} className="section-flow relative min-h-screen items-center flex flex-col text-white pt-10 pb-4 bg-transparent">
-      {/* SVG-иконка пластинки (минималистичный line art): position absolute, внизу по центру */}
-      <div
-        className="absolute left-1/2 -translate-x-1/2 bottom-4 md:bottom-6 z-0 pointer-events-none"
-        style={{ width: 'clamp(120px, 28vw, 220px)' }}
-        aria-hidden="true"
-      >
-        <svg
-          className="w-full h-auto block"
-          viewBox="0 0 100 100"
-          fill="none"
-          stroke="#FDF4E3"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{ opacity: 0.55 }}
-        >
-          {/* Внешний круг пластинки */}
-          <path
-            pathLength="1"
-            className={`draw-vinyl-path draw-vinyl-path-wait-view ${isUnreleasedInView ? 'draw-vinyl-path-animate' : ''}`}
-            d="M 50 8 A 42 42 0 0 1 92 50 A 42 42 0 0 1 50 92 A 42 42 0 0 1 8 50 A 42 42 0 0 1 50 8"
-          />
-          {/* Центр: втулка и отверстие шпинделя (два концентрических круга) */}
-          <path
-            pathLength="1"
-            className={`draw-vinyl-path draw-vinyl-path-wait-view ${isUnreleasedInView ? 'draw-vinyl-path-animate' : ''}`}
-            d="M 50 42 A 8 8 0 0 1 58 50 A 8 8 0 0 1 50 58 A 8 8 0 0 1 42 50 A 8 8 0 0 1 50 42 M 50 47 A 3 3 0 0 1 53 50 A 3 3 0 0 1 50 53 A 3 3 0 0 1 47 50 A 3 3 0 0 1 50 47"
-          />
-          {/* Дорожки: дуги в левом верхнем квадранте (3 дуги, от центра наружу) */}
-          <path
-            pathLength="1"
-            className={`draw-vinyl-path draw-vinyl-path-wait-view ${isUnreleasedInView ? 'draw-vinyl-path-animate' : ''}`}
-            d="M 38.69 38.69 A 16 16 0 0 1 50 34 M 30.2 30.2 A 28 28 0 0 1 50 22 M 23.1 23.1 A 38 38 0 0 1 50 12"
-          />
-          {/* Дорожки: дуги в правом нижнем квадранте (3 дуги, зеркально) */}
-          <path
-            pathLength="1"
-            className={`draw-vinyl-path draw-vinyl-path-wait-view ${isUnreleasedInView ? 'draw-vinyl-path-animate' : ''}`}
-            d="M 61.31 61.31 A 16 16 0 0 1 50 66 M 69.8 69.8 A 28 28 0 0 1 50 78 M 76.9 76.9 A 38 38 0 0 1 50 88"
-          />
-        </svg>
-      </div>
+     
       <motion.div className="w-full flex flex-col items-center md:items-center w-90 bg-transparent pb-30 relative z-10" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportDefault}>
         <div className="mt-2 text-center pt-6 mb-4 px-2 min-w-0 overflow-hidden">
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl max-w-full" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>
