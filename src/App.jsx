@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { viewportDefault, viewportSectionVisible, staggerContainer, staggerItem, staggerContainerSlow, staggerItemSlow } from "./lib/motionVariants"
 import { AnimatedText } from "./components/AnimatedText/AnimatedText"
 import trackData from '../track.json'
@@ -16,7 +16,12 @@ import 'react-phone-input-2/lib/style.css'
 
 function App() {
     console.log(data.questionAnswer);
+    const SNAP_DEBOUNCE_MS = 260;
+    const AUTO_SNAP_LOCK_MS = 900;
+    const MIN_SNAP_DISTANCE = 18;
     const mainRef = useRef(null);
+    const snapTimeoutRef = useRef(null);
+    const isAutoSnappingRef = useRef(false);
     const aboutSectionRef = useRef(null);
     const portfolioSectionRef = useRef(null);
     const unreleasedSectionRef = useRef(null);
@@ -39,6 +44,55 @@ function App() {
     const handleAnswer=(index)=>{
      setAnswer(answer===index?null:index)
     }
+
+  useEffect(() => {
+    const container = mainRef.current;
+    if (!container) return;
+
+    const isMobile = () => window.matchMedia("(max-width: 768px)").matches;
+
+    const snapToNearestSection = () => {
+      if (!isMobile()) return;
+      if (isAutoSnappingRef.current) return;
+
+      const sections = Array.from(container.querySelectorAll(":scope > section"));
+      if (!sections.length) return;
+
+      const currentScroll = container.scrollTop;
+      let nearestSection = sections[0];
+      let minDistance = Math.abs(nearestSection.offsetTop - currentScroll);
+
+      for (let i = 1; i < sections.length; i += 1) {
+        const distance = Math.abs(sections[i].offsetTop - currentScroll);
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearestSection = sections[i];
+        }
+      }
+
+      // Игнорируем совсем мелкие расхождения, чтобы избежать микроподергиваний.
+      if (minDistance < MIN_SNAP_DISTANCE) return;
+
+      isAutoSnappingRef.current = true;
+      container.scrollTo({ top: nearestSection.offsetTop, behavior: "smooth" });
+      window.setTimeout(() => {
+        isAutoSnappingRef.current = false;
+      }, AUTO_SNAP_LOCK_MS);
+    };
+
+    const onScroll = () => {
+      if (!isMobile()) return;
+      if (snapTimeoutRef.current) window.clearTimeout(snapTimeoutRef.current);
+      snapTimeoutRef.current = window.setTimeout(snapToNearestSection, SNAP_DEBOUNCE_MS);
+    };
+
+    container.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      container.removeEventListener("scroll", onScroll);
+      if (snapTimeoutRef.current) window.clearTimeout(snapTimeoutRef.current);
+    };
+  }, []);
 
 
 
