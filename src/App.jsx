@@ -24,6 +24,17 @@ function App() {
     const isPortfolioInView = useInView(portfolioSectionRef, { once: true, amount: 0.2 });
     const isUnreleasedInView = useInView(unreleasedSectionRef, { once: true, amount: 0.2 });
     const [answer, setAnswer] = useState(null)
+    const [desktopFlippedIndex, setDesktopFlippedIndex] = useState(null)
+    const textSize = {
+      large: "text-3xl sm:text-4xl md:text-3xl lg:text-4xl xl:text-5xl",
+      medium: "text-base sm:text-lg md:text-xl",
+      small: "text-sm sm:text-base md:text-lg"
+    }
+    const defaultLinks = [
+      { label: "Spotify", href: "#" },
+      { label: "Apple Music", href: "#" },
+      { label: "YouTube", href: "#" },
+    ];
 
     const handleAnswer=(index)=>{
      setAnswer(answer===index?null:index)
@@ -128,7 +139,7 @@ function App() {
         whileInView="visible"
         viewport={viewportDefault}
       >
-        <div className="text-bold text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl text-center pb-30" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>
+        <div className={`text-bold ${textSize.large} text-center pb-30`} style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>
           <h2><AnimatedText text="Обо мне" className="inline-block" /></h2>
         </div>
         <div className="flex items-center justify-center pb-6">
@@ -144,7 +155,7 @@ function App() {
             </div>
           </div>
 
-          <motion.div className="space-y-4 text-[16px] sm:text-base md:text-sm lg:text-base text-[#CDCABB] leading-relaxed max-w-3xl mx-auto text-center md:text-justify md:mx-0 md:ml-auto md:mr-0 md:mt-0 md:max-w-none md:w-[56%] md:translate-x-4" style={{fontFamily:'SixFonts,sans-serif',letterSpacing:'2px'}} variants={staggerItem}>
+          <motion.div className={`space-y-4 ${textSize.medium} text-[#CDCABB] leading-relaxed max-w-3xl mx-auto text-center md:text-justify md:mx-0 md:ml-auto md:mr-0 md:mt-0 md:max-w-none md:w-[56%] md:translate-x-4`} style={{fontFamily:'SixFonts,sans-serif',letterSpacing:'2px'}} variants={staggerItem}>
     <p>
     Меня зовут Миша Гудков, я саунд-продюсер и сонграйтер. Родился и вырос в Москве, учился в музыкальной школе при Московской 
     консерватории по специальности «фортепиано». Музыкой занимаюсь более 14 лет из своих 20. Последние 8 лет работаю в музыкальном продакшне; за последние 2 года сделал больше 150 песен и поработал над саундтреком к трём сериалам.</p>
@@ -154,6 +165,45 @@ function App() {
 
   </motion.div>
         </div>
+      </motion.div>
+    </section>
+
+    <section className="section-flow min-h-screen items-center  relative px-4 text-[#F5F5F5] pt-10 pb-20 bg-[#131212] ">
+      <motion.div className="w-full flex flex-col items-center" variants={staggerContainerSlow.variants} initial="hidden" whileInView="visible" viewport={viewportSectionVisible}>
+        <div className="font-bold mb-4 text-[#FDF4E3]">
+          <h3 className={textSize.small}><AnimatedText text="[FAQ]" /></h3>
+        </div>
+        <motion.div className="mt-6 text-center px-2 min-w-0 overflow-hidden" variants={staggerItemSlow}>
+          <h2 className={`${textSize.large} max-w-full mb-10`} style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'1px'}}>Ответы на частые вопросы </h2>
+        </motion.div>
+        <motion.div className="w-full max-w-4xl mx-auto mt-2 border-t border-[#2C3E50]/30 flex flex-col gap-3" variants={staggerItemSlow}>
+          {data.questionAnswer.slice(0, 4).map((d, i) => (
+            <div
+              key={d.id}
+              className="bg-[#F2E5D4] px-6 py-6 sm:px-10 sm:py-8 border-b border-[#2C3E50]/30 last:border-b-0"
+            >
+              <div
+                onClick={() => handleAnswer(i)}
+                className="cursor-pointer"
+              >
+                <h4
+                  className={`${textSize.medium} font-serif font-bold text-[#2C3E50] uppercase tracking-tight mb-2 flex justify-between items-start gap-4`}
+                  style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+                >
+                  <span className="flex-1">{d.question}</span>
+                  <span className="w-8 h-8 flex items-center justify-center text-xl shrink-0">
+                    {answer === i ? "−" : "+"}
+                  </span>
+                </h4>
+              </div>
+              {answer === i && (
+                <p className={`text-[#5a5a5a] ${textSize.medium} max-w-2xl leading-relaxed pt-2 border-t border-[#2C3E50]/20`}>
+                  {d.answer}
+                </p>
+              )}
+            </div>
+          ))}
+        </motion.div>
       </motion.div>
     </section>
 
@@ -183,15 +233,15 @@ function App() {
           viewport={viewportDefault}
         >
           <div className="font-bold text-[#FDF4E3] mb-2 md:mb-4">
-            <h3 className="text-sm sm:text-base md:text-lg mt-2"><AnimatedText text="[Портфолио]" /></h3>
+            <h3 className={`${textSize.small} mt-2`}><AnimatedText text="[Портфолио]" /></h3>
           </div>
           <motion.div className="mt-6 text-center px-1 min-w-0 overflow-hidden md:mb-8" variants={staggerItem}>
-            <h2 className="text-3xl sm:text-4xl md:text-3xl lg:text-4xl xl:text-5xl max-w-full" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'1.5px'}}>
+            <h2 className={`${textSize.large} max-w-full`} style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'1.5px'}}>
               <span className="block md:inline"><AnimatedText text="Реализованные" /></span>
               <span className="block md:inline md:ml-3"><AnimatedText text="проекты" /></span>
             </h2>
           </motion.div>
-          <motion.div className="mt-3 mb-3 md:hidden text-sm text-[#D3D3D3]" variants={staggerItem}>
+          <motion.div className={`mt-3 mb-3 md:hidden ${textSize.small} text-[#D3D3D3]`} variants={staggerItem}>
             <p>Листайте вправо</p>
           </motion.div>
         </motion.div>
@@ -215,23 +265,75 @@ function App() {
               {trackData.tracks.map((item, index) => (
                 <motion.div
                   key={index}
-                  className="bg-[#d9d9d9] overflow-hidden shadow-lg"
+                  className="bg-[#d9d9d9] overflow-hidden shadow-lg cursor-pointer"
                   style={{ contentVisibility: 'auto', containIntrinsicSize: '320px' }}
                   variants={staggerItem}
                   whileHover={{ scale: 1.03 }}
                   transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+                  onClick={() =>
+                    setDesktopFlippedIndex(desktopFlippedIndex === index ? null : index)
+                  }
                 >
-                  <img
-                    src={item.image.startsWith('http') ? item.image : `${import.meta.env.BASE_URL}${item.image}`}
-                    alt={item.title}
-                    className="w-full aspect-square object-cover"
-                    loading="lazy"
-                    decoding="async"
-                    fetchpriority="low"
-                  />
-                  <div className="p-3 text-black border-t border-black/5">
-                    <h3 className="text-sm lg:text-base font-semibold leading-tight line-clamp-2">{item.title}</h3>
-                    <p className="text-xs opacity-70 mt-1">{item.year}</p>
+                  <div style={{ perspective: "1200px" }}>
+                    <div
+                      className="relative w-full h-full transition-transform duration-700 ease-in-out"
+                      style={{
+                        transformStyle: "preserve-3d",
+                        transform: desktopFlippedIndex === index ? "rotateY(180deg)" : "rotateY(0deg)",
+                      }}
+                    >
+                      <div
+                        className="w-full h-full"
+                        style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+                      >
+                        <img
+                          src={item.image.startsWith('http') ? item.image : `${import.meta.env.BASE_URL}${item.image}`}
+                          alt={item.title}
+                          className="w-full aspect-square object-cover"
+                          loading="lazy"
+                          decoding="async"
+                          fetchpriority="low"
+                        />
+                        <div className="p-3 text-black border-t border-black/5 min-h-[112px]">
+                          <h3 className={`${textSize.small} font-semibold leading-tight line-clamp-2 min-h-[56px]`}>{item.title}</h3>
+                          <p className="text-sm opacity-70 mt-1">{item.year}</p>
+                        </div>
+                      </div>
+
+                      <div
+                        className="absolute inset-0 bg-[#d9d9d9] flex flex-col items-center justify-start px-5 pt-6 pb-4"
+                        style={{
+                          transform: "rotateY(180deg)",
+                          backfaceVisibility: "hidden",
+                          WebkitBackfaceVisibility: "hidden",
+                        }}
+                        onClick={(event) => event.stopPropagation()}
+                      >
+                        <div className="w-full max-w-[220px] border-t border-black/20 mt-1">
+                          {(item.links?.length ? item.links : defaultLinks).slice(0, 3).map((link, linkIndex) => (
+                            <a
+                              key={`${index}-${linkIndex}`}
+                              href={link.href}
+                              target="_blank"
+                              rel="noreferrer"
+                              className={`w-full flex items-center justify-between border-b border-black/20 py-2.5 px-1 ${textSize.small} text-black/80 hover:text-black transition-colors`}
+                            >
+                              <span>{link.label}</span>
+                              <span aria-hidden="true" className="text-sm">→</span>
+                            </a>
+                          ))}
+                        </div>
+
+                        <button
+                          type="button"
+                          aria-label="Закрыть"
+                          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-black text-6xl font-thin leading-none flex items-center justify-center hover:opacity-70 transition-opacity"
+                          onClick={() => setDesktopFlippedIndex(null)}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -247,7 +349,7 @@ function App() {
           viewport={viewportDefault}
         >
           <motion.div className="md:max-w-7xl md:mx-auto md:px-6 lg:px-10" variants={staggerItem}>
-            <div className="text-start text-base sm:text-lg md:text-2xl w-70 px-2">
+            <div className="text-center md:text-start text-xl sm:text-2xl md:text-xl w-70 px-2 mx-auto md:mx-0">
               <h2 className="md:whitespace-nowrap" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>
                 Послушать работы <br className="md:hidden" />вы можете здесь
               </h2>
@@ -262,10 +364,10 @@ function App() {
        <section ref={unreleasedSectionRef} className="section-flow relative min-h-screen items-center flex flex-col text-white pt-10 pb-4 bg-transparent">
      
       <motion.div className="w-full flex flex-col items-center md:items-center w-90 bg-transparent pb-30 relative z-10" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportDefault}>
-        <div className="mt-2 text-center pt-6 mb-4 px-2 min-w-0 overflow-hidden">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl max-w-full" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>
-            <span className="block"><AnimatedText text="Невыпущенные" /></span>
-            <span className="block"><AnimatedText text="проекты" /></span>
+        <div className="mt-2 text-center pt-6 mb-4 md:mb-8 px-2 min-w-0 overflow-hidden">
+          <h2 className={`${textSize.large} max-w-full`} style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>
+            <span className="block md:inline"><AnimatedText text="Невыпущенные" /></span>
+            <span className="block md:inline md:ml-3"><AnimatedText text="проекты" /></span>
           </h2>
         </div>
         <motion.div className="mt-2 w-full" variants={staggerItem}>
@@ -275,50 +377,13 @@ function App() {
     </section>
 
     {/* FAQ — в стиле секции «Услуги» */}
-    <section className="section-flow min-h-screen items-center  relative px-4 text-[#F5F5F5] pt-10 pb-20 bg-[#131212] ">
-      <motion.div className="w-full flex flex-col items-center" variants={staggerContainerSlow.variants} initial="hidden" whileInView="visible" viewport={viewportSectionVisible}>
-        <div className="font-bold mb-4 text-[#FDF4E3]">
-          <h3 className="text-sm sm:text-base md:text-lg"><AnimatedText text="[FAQ]" /></h3>
-        </div>
-        <motion.div className="mt-6 text-center px-2 min-w-0 overflow-hidden" variants={staggerItemSlow}>
-          <h2 className="text-3xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl max-w-full mb-10" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'1px'}}>Ответы на частые вопросы </h2>
-        </motion.div>
-        <motion.div className="w-full max-w-4xl mx-auto mt-2 border-t border-[#2C3E50]/30 flex flex-col gap-3" variants={staggerItemSlow}>
-          {data.questionAnswer.slice(0, 4).map((d, i) => (
-            <div
-              key={d.id}
-              className="bg-[#F2E5D4] px-6 py-6 sm:px-10 sm:py-8 border-b border-[#2C3E50]/30 last:border-b-0"
-            >
-              <div
-                onClick={() => handleAnswer(i)}
-                className="cursor-pointer"
-              >
-                <h4
-                  className="text-xl sm:text-2xl font-serif font-bold text-[#2C3E50] uppercase tracking-tight mb-2 flex justify-between items-start gap-4"
-                  style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
-                >
-                  <span className="flex-1">{d.question}</span>
-                  <span className="w-8 h-8 flex items-center justify-center text-2xl shrink-0">
-                    {answer === i ? "−" : "+"}
-                  </span>
-                </h4>
-              </div>
-              {answer === i && (
-                <p className="text-[#5a5a5a] text-base sm:text-lg max-w-2xl leading-relaxed pt-2 border-t border-[#2C3E50]/20">
-                  {d.answer}
-                </p>
-              )}
-            </div>
-          ))}
-        </motion.div>
-      </motion.div>
-    </section>
+    
 
     {/* Услуги */}
     <section className="section-flow min-h-screen items-center flex relative px-4 flex-col text-[#F5F5F5] pt-20 pb-20 bg-[#131212]">
       <motion.div className="w-full flex flex-col items-center" variants={staggerContainerSlow.variants} initial="hidden" whileInView="visible" viewport={viewportSectionVisible}>
         <div className="font-bold mb-10 text-[#FDF4E3]">
-          <h3 className="text-sm sm:text-base md:text-lg"><AnimatedText text="[Услуги]" /></h3>
+          <h3 className={textSize.small}><AnimatedText text="[Услуги]" /></h3>
         </div>
         <motion.div variants={staggerItemSlow}>
           <Services

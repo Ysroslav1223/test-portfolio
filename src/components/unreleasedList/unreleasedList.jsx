@@ -8,6 +8,9 @@ export const UnreleasedList = ({ items }) => {
   const [error, setError] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const audioRef = useRef(null);
+  const textSize = {
+    small: "text-sm sm:text-base md:text-lg",
+  };
 
   const formatTime = useCallback((sec) => {
     if (!sec || isNaN(sec)) return "0:00";
@@ -150,10 +153,10 @@ export const UnreleasedList = ({ items }) => {
               </button>
 
               <div className="flex-1 min-w-0">
-                <div className="font-medium text-white truncate text-[15px]">
+                <div className={`font-medium text-white truncate ${textSize.medium}`}>
                   {t.title}
                 </div>
-                <div className="text-[13px] text-white/60 truncate">
+                <div className={`text-white/60 truncate ${textSize.small}`}>
                   {t.author} · {t.status}
                 </div>
                 {isPlaying && (
@@ -186,7 +189,7 @@ export const UnreleasedList = ({ items }) => {
                 )}
               </div>
 
-              <div className="flex-shrink-0 text-[13px] text-white/50 tabular-nums">
+              <div className={`flex-shrink-0 ${textSize.small} text-white/50 tabular-nums`}>
                 {isPlaying && duration > 0
                   ? `${formatTime(currentTime)} / ${formatTime(duration)}`
                   : "--:--"}

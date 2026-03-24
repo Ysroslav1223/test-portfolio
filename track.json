@@ -3,27 +3,52 @@
     {
       "image": "covers/1.jpg",
       "title": "Спасибо",
-      "year": 2020
+      "year": 2020,
+      "links": [
+    { "label": "Spotify", "href": "https://open.spotify.com/..." },
+    { "label": "Apple Music", "href": "https://music.apple.com/..." },
+    { "label": "YouTube", "href": "https://youtube.com/..." }
+  ]
     },
     {
       "image": "covers/2.jpg",
-      "title": "я так боюсь когда нету тебя»",
-      "year": 2018
+      "title": "я так боюсь когда нету тебя",
+      "year": 2018,
+      "links": [
+    { "label": "Spotify", "href": "https://open.spotify.com/..." },
+    { "label": "Apple Music", "href": "https://music.apple.com/..." },
+    { "label": "Яндекс Музыка", "href": "https://youtube.com/..." }
+  ]
     },
     {
       "image": "covers/3.jpg",
       "title": "я тебя тоже",
-      "year": 2023
+      "year": 2023,
+      "links": [
+    { "label": "Spotify", "href": "https://open.spotify.com/..." },
+    { "label": "Apple Music", "href": "https://music.apple.com/..." },
+    { "label": "Яндекс Музыка", "href": "https://youtube.com/..." }
+  ]
     },
     {
       "image": "covers/4.jpg",
       "title": "Искатель",
-      "year": 2024
+      "year": 2024,
+      "links": [
+    { "label": "Spotify", "href": "https://open.spotify.com/..." },
+    { "label": "Apple Music", "href": "https://music.apple.com/..." },
+    { "label": "Яндекс Музыка", "href": "https://youtube.com/..." }
+  ]
     },
     {
       "image": "covers/5.JPG",
       "title": "Чувственный букет",
-      "year": 2024
+      "year": 2024,
+      "links": [
+    { "label": "Spotify", "href": "https://open.spotify.com/..." },
+    { "label": "Apple Music", "href": "https://music.apple.com/..." },
+    { "label": "Яндекс Музыка", "href": "https://youtube.com/..." }
+  ]
     }
   ] 
 }

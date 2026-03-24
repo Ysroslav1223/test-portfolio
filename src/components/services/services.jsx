@@ -370,24 +370,29 @@ export const Services = ({ services, btn }) => {
 
   const actions = (btn || []).filter((name) => BTN_LABELS[name])
   const list = Array.isArray(services) && services.length ? services : []
+  const textSize = {
+    large: "text-3xl sm:text-4xl md:text-3xl lg:text-4xl xl:text-5xl",
+    medium: "text-base sm:text-lg md:text-xl",
+    small: "text-sm sm:text-base md:text-lg",
+  }
 
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col gap-0 border-t border-[#2C3E50]/30 gap-2">
       {list.map((item, index) => (
         <div
           key={item.id ?? index}
-          className="bg-[#F2E5D4] px-8 py-10 sm:px-12 sm:py-14 border-b border-[#2C3E50]/30 last:border-b-0"
+          className="bg-[#F2E5D4] px-6 py-6 sm:px-8 sm:py-8 border-b border-[#2C3E50]/30 last:border-b-0"
         >
           {item.title && (
             <h4
-              className="text-3xl sm:text-4xl font-serif font-bold text-[#2C3E50] uppercase tracking-tight mb-4"
+              className={`${textSize.medium} font-serif font-bold text-[#2C3E50] uppercase tracking-tight mb-2`}
               style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
             >
               {item.title}
             </h4>
           )}
           {item.descrip && (
-            <p className="text-[#5a5a5a] text-base sm:text-lg mb-10 max-w-2xl leading-relaxed">
+            <p className={`text-[#5a5a5a] ${textSize.small} mb-10 max-w-2xl leading-relaxed`}>
               {item.descrip}
             </p>
           )}
@@ -397,7 +402,7 @@ export const Services = ({ services, btn }) => {
                 key={name}
                 type="button"
                 onClick={() => openModal(name)}
-                className="text-[#2C3E50] font-serif font-medium hover:opacity-90 transition-opacity"
+                className={`text-[#2C3E50] ${textSize.small} font-serif font-medium hover:opacity-90 transition-opacity`}
               >
                 {BTN_LABELS[name]}
               </button>

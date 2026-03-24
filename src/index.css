@@ -20,13 +20,13 @@ body {
     height: 100dvh;
     overflow-y: auto;
     overflow-x: hidden;
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
   }
   .mobile-snap-scroll > section {
     scroll-snap-align: start;
-    scroll-snap-stop: always;
+    scroll-snap-stop: normal;
     min-height: 100vh;
     min-height: 100dvh;
   }
