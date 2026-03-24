@@ -81,9 +81,9 @@ export default function Carousel({ tracks }) {
                       decoding="async"
                       fetchpriority="low"
                     />
-                    <div className="p-2 md:p-3 text-black flex-shrink-0 border-t border-black/5">
+                    <div className="p-2 md:p-3 text-[#000] flex-shrink-0 border-t border-black/5">
                       <h3 className={`${textSize.small} font-semibold leading-tight line-clamp-2`}>{item.title}</h3>
-                      <p className="text-sm opacity-70 mt-0.5">{item.year}</p>
+                      <p className="text-sm text-[#000]/70 mt-0.5">{item.year}</p>
                     </div>
                   </div>
 

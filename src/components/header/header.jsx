@@ -16,16 +16,16 @@ export const Header=()=>{
     
 
     return(
-        <div className="w-full h-16 bg-white/30 backdrop-blur-md flex justify-around items-center fixed gap-10">
-            <div className="text-white flex  gap-2 ml-10">
+        <div className="w-full h-16 bg-[#0c0f2b]/45 backdrop-blur-md flex justify-around items-center fixed gap-10">
+            <div className="text-[#CDCABB] flex  gap-2 ml-10">
                 <button>Ru</button>
                 <p>|</p>
                 <button>En</button>
             </div>
-            <div className="text-white">
+            <div className="text-[#CDCABB]">
                 <h2>The best producer </h2>
             </div>
-            {!mobile&&(<div className="text-white pr-10">
+            {!mobile&&(<div className="text-[#CDCABB] pr-10">
                 <h3>Logo</h3>
             </div>)}
             

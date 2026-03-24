@@ -9,7 +9,6 @@ import Carousel from "./components/carusel/carusel"
 import { Social } from "./components/social/social"
 import { UnreleasedList } from "./components/unreleasedList/unreleasedList"
 import Iam from '../public/images/micha.jpg'
-import secondImg from '../public/images/four.png'
 import { Services } from "./components/services/services"
 import 'react-phone-input-2/lib/style.css'
 
@@ -44,6 +43,10 @@ function App() {
     const handleAnswer=(index)=>{
      setAnswer(answer===index?null:index)
     }
+
+    const unreleasedTracksList = tracksNotRealized.tracksNotRealized
+    /** На desktop (xl+) первый трек остаётся в мобильной/планшетной секции; в портфолио — следующие 4 */
+    const unreleasedTracksDesktopAside = unreleasedTracksList.slice(1, 5)
 
   useEffect(() => {
     const container = mainRef.current;
@@ -97,13 +100,13 @@ function App() {
 
 
   return (
-      <div ref={mainRef} className="relative overflow-x-hidden bg-[#131212] mobile-snap-scroll">
+      <div ref={mainRef} className="relative overflow-x-hidden bg-[#0c0f2b] mobile-snap-scroll">
         {/* Hero — анимация при загрузке */}
         <section className="relative flex flex-col min-h-full md:flex-row md:min-h-screen">
     <div 
       className="
         relative w-full h-[50vh] md:w-1/2 md:h-screen 
-        bg-cover bg-center flex items-end justify-center p-4
+        bg-cover bg-center
       "
       style={{ 
         backgroundImage: `url(${Iam})`,
@@ -111,45 +114,21 @@ function App() {
       }}
     >
       <div className="absolute inset-0 bg-black/40 md:bg-black/20"></div>
-      <div className="hidden md:flex text-[#F8F8FF] z-10 absolute left-8 bottom-8 md:left-10 md:bottom-10 lg:left-12 lg:bottom-12 xl:left-20 xl:bottom-16">
-        <div className="text-left">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-2 md:mb-3 lg:mb-4 min-w-0 break-words" style={{fontFamily:'EightFonts,sans-serif'}}>
-            <AnimatedText text="Michael Houdini" useAnimate />
-          </h2>
-          <h3 className="text-xl md:text-2xl lg:text-4xl xl:text-6xl" style={{fontFamily:'SecondFonts,sans-serif'}}>
-            <AnimatedText text="producer" useAnimate />
-          </h3>
-        </div>
-      </div>
-      <div className="md:hidden text-end flex flex-col justify-end items-center text-[#F8F8FF] z-10 relative">
-        <h2 className="text-3xl mb-2" style={{fontFamily:'EightFonts,sans-serif'}}>
-          <AnimatedText text="Michael Houdini" useAnimate />
-        </h2>
-        <h3 className="text-xl" style={{fontFamily:'SecondFonts,sans-serif'}}>
-          <AnimatedText text="producer" useAnimate />
-        </h3>
-      </div>
     </div>
     
     <div 
       className="
         relative w-full h-[50vh] md:w-1/2 md:h-screen
-        bg-cover bg-center flex items-start justify-center p-4
+        bg-[#0c0f2b] flex flex-col p-4 md:p-8 lg:p-10 xl:pr-20 xl:pb-16
       "
-      style={{ 
-        backgroundImage: `url(${secondImg})`,
-       
-      }}
     >
-      <div className="absolute inset-0 bg-black/40 md:bg-black/40"></div>
-      
       <motion.div
-        className="text-center font-bold text-[#FDF4E3] max-w-md relative z-10"
+        className="font-bold text-[#CDCABB] w-full flex justify-end relative z-10 shrink-0"
         initial={{ opacity: 0, y: 28 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="flex flex-row gap-10 mt-10">
+        <div className="flex flex-row gap-10 pt-2 md:pt-10">
           <a href="https://t.me/hvdini">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -171,11 +150,21 @@ function App() {
           </a>
         </div>
       </motion.div>
+      <div className="flex flex-1 flex-col justify-end items-end text-right text-[#CDCABB] z-10 min-h-0 pb-4 md:pb-0">
+        <div className="w-full">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-2 md:mb-3 lg:mb-4 min-w-0 break-words" style={{fontFamily:'EightFonts,sans-serif'}}>
+            <AnimatedText text="Michael Houdini" useAnimate />
+          </h2>
+          <h3 className="text-xl md:text-2xl lg:text-4xl xl:text-6xl" style={{fontFamily:'SecondFonts,sans-serif'}}>
+            <AnimatedText text="producer" useAnimate />
+          </h3>
+        </div>
+      </div>
     </div>
         </section>
 
     {/* Обо мне — линия + буквы + контент */}
-    <section ref={aboutSectionRef} className="section-flow relative min-h-screen text-[#F5F5F5] justify-center bg-[#131212] flex flex-col">
+    <section ref={aboutSectionRef} className="section-flow relative min-h-screen text-[#CDCABB] justify-center bg-[#0c0f2b] flex flex-col">
       {/* Фоновая SVG-линия: рисуется при появлении секции в зоне видимости */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <svg className="absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -209,7 +198,7 @@ function App() {
             </div>
           </div>
 
-          <motion.div className={`space-y-4 ${textSize.medium} text-[#CDCABB] leading-relaxed max-w-3xl mx-auto text-center md:text-justify md:mx-0 md:ml-auto md:mr-0 md:mt-0 md:max-w-none md:w-[56%] md:translate-x-4`} style={{fontFamily:'SixFonts,sans-serif',letterSpacing:'2px'}} variants={staggerItem}>
+          <motion.div className={`space-y-4 ${textSize.medium} text-[#CDCABB] leading-relaxed max-w-3xl mx-auto text-center md:text-justify md:mx-0 md:ml-auto md:mr-0 md:mt-0 md:max-w-none md:w-[56%] md:translate-x-4`} style={{fontFamily:'SecondFonts',letterSpacing:'2px'}} variants={staggerItem}>
     <p>
     Меня зовут Миша Гудков, я саунд-продюсер и сонграйтер. Родился и вырос в Москве, учился в музыкальной школе при Московской 
     консерватории по специальности «фортепиано». Музыкой занимаюсь более 14 лет из своих 20. Последние 8 лет работаю в музыкальном продакшне; за последние 2 года сделал больше 150 песен и поработал над саундтреком к трём сериалам.</p>
@@ -222,47 +211,40 @@ function App() {
       </motion.div>
     </section>
 
-    <section className="section-flow min-h-screen items-center  relative px-4 text-[#F5F5F5] pt-10 pb-20 bg-[#131212] ">
+    <section className="section-flow min-h-screen items-center flex relative px-4 flex-col text-[#CDCABB] pt-20 pb-20 bg-[#0c0f2b]">
       <motion.div className="w-full flex flex-col items-center" variants={staggerContainerSlow.variants} initial="hidden" whileInView="visible" viewport={viewportSectionVisible}>
-        <div className="font-bold mb-4 text-[#FDF4E3]">
-          <h3 className={textSize.small}><AnimatedText text="[FAQ]" /></h3>
+        <div className="font-bold mb-10 text-[#CDCABB]">
+          <h3 className={textSize.small}><AnimatedText text="[Услуги]" /></h3>
         </div>
-        <motion.div className="mt-6 text-center px-2 min-w-0 overflow-hidden" variants={staggerItemSlow}>
-          <h2 className={`${textSize.large} max-w-full mb-10`} style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'1px'}}>Ответы на частые вопросы </h2>
-        </motion.div>
-        <motion.div className="w-full max-w-4xl mx-auto mt-2 border-t border-[#2C3E50]/30 flex flex-col gap-3" variants={staggerItemSlow}>
-          {data.questionAnswer.slice(0, 4).map((d, i) => (
-            <div
-              key={d.id}
-              className="bg-[#F2E5D4] px-6 py-6 sm:px-10 sm:py-8 border-b border-[#2C3E50]/30 last:border-b-0"
-            >
-              <div
-                onClick={() => handleAnswer(i)}
-                className="cursor-pointer"
-              >
-                <h4
-                  className={`${textSize.medium} font-serif font-bold text-[#2C3E50] uppercase tracking-tight mb-2 flex justify-between items-start gap-4`}
-                  style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
-                >
-                  <span className="flex-1">{d.question}</span>
-                  <span className="w-8 h-8 flex items-center justify-center text-xl shrink-0">
-                    {answer === i ? "−" : "+"}
-                  </span>
-                </h4>
-              </div>
-              {answer === i && (
-                <p className={`text-[#5a5a5a] ${textSize.medium} max-w-2xl leading-relaxed pt-2 border-t border-[#2C3E50]/20`}>
-                  {d.answer}
-                </p>
-              )}
-            </div>
-          ))}
+        <motion.div variants={staggerItemSlow}>
+          <Services
+            services={[
+              {
+                id: 'prod',
+                title: 'Музыкальный продакшн',
+                descrip: 'Создание трека под ключ с контролем на каждом этапе. На входе идея, на выходе готовый релиз с актуальным звучанием. Включает аранжировку, сведение и мастеринг, запись по запросу.',
+              },
+              {
+                id: 'sound',
+                title: 'Аранжировка',
+                descrip: 'Развитие идеи или демо в полноценный трек. Проработка звучания, структуры и деталей до финального результата.',
+              },
+              {
+                id: 'post',
+                title: 'Продакшн полного цикла',
+                descrip: 'Проект ведётся от идеи до релиза. Полное сопровождение на всех этапах: создание трека, доработка, подготовка к выпуску и визуал. На выходе готовый релиз на площадках и видео для его поддержки.',
+              },
+            ]}
+            btn={['смета', 'бриф', 'связь']}
+          />
         </motion.div>
       </motion.div>
     </section>
 
+    
+
    {/* Портфолио — Реализованные проекты */}
-   <section ref={portfolioSectionRef} className="section-flow relative min-h-screen items-center flex flex-col text-white pt-6 pb-6 md:pt-10 md:pb-10 bg-transparent">
+   <section ref={portfolioSectionRef} className="section-flow relative min-h-screen items-center flex flex-col text-[#CDCABB] pt-6 pb-14 md:pt-10 md:pb-20 xl:pb-24 bg-[#0c0f2b]">
       {/* Фоновая SVG-линия: рисуется при появлении секции в зоне видимости */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <svg className="absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -286,7 +268,7 @@ function App() {
           whileInView="visible"
           viewport={viewportDefault}
         >
-          <div className="font-bold text-[#FDF4E3] mb-2 md:mb-4">
+          <div className="font-bold text-[#CDCABB] mb-2 md:mb-4">
             <h3 className={`${textSize.small} mt-2`}><AnimatedText text="[Портфолио]" /></h3>
           </div>
           <motion.div className="mt-6 text-center px-1 min-w-0 overflow-hidden md:mb-8" variants={staggerItem}>
@@ -295,7 +277,7 @@ function App() {
               <span className="block md:inline md:ml-3"><AnimatedText text="проекты" /></span>
             </h2>
           </motion.div>
-          <motion.div className={`mt-3 mb-3 md:hidden ${textSize.small} text-[#D3D3D3]`} variants={staggerItem}>
+          <motion.div className={`mt-3 mb-3 md:hidden ${textSize.small} text-[#CDCABB]`} variants={staggerItem}>
             <p>Листайте вправо</p>
           </motion.div>
         </motion.div>
@@ -348,9 +330,9 @@ function App() {
                           decoding="async"
                           fetchpriority="low"
                         />
-                        <div className="p-3 text-black border-t border-black/5 min-h-[112px]">
-                          <h3 className={`${textSize.small} font-semibold leading-tight line-clamp-2 min-h-[56px]`}>{item.title}</h3>
-                          <p className="text-sm opacity-70 mt-1">{item.year}</p>
+                        <div className="p-3 text-[#000] border-t border-black/5">
+                          <h3 className={`${textSize.small} font-semibold leading-tight line-clamp-2`}>{item.title}</h3>
+                          <p className="text-sm text-[#000]/70 mt-0.5">{item.year}</p>
                         </div>
                       </div>
 
@@ -402,20 +384,27 @@ function App() {
           whileInView="visible"
           viewport={viewportDefault}
         >
-          <motion.div className="md:max-w-7xl md:mx-auto md:px-6 lg:px-10" variants={staggerItem}>
-            <div className="text-center md:text-start text-xl sm:text-2xl md:text-xl w-70 px-2 mx-auto md:mx-0">
-              <h2 className="md:whitespace-nowrap" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>
-                Послушать работы <br className="md:hidden" />вы можете здесь
-              </h2>
+          <motion.div className="md:max-w-7xl md:mx-auto md:px-6 lg:px-10 w-full" variants={staggerItem}>
+            <div className="flex flex-col xl:flex-row xl:items-start xl:justify-between xl:gap-10 2xl:gap-14">
+              <div className="min-w-0 xl:max-w-[min(100%,720px)] xl:flex-1">
+                <div className="text-center md:text-start text-xl sm:text-2xl md:text-xl text-[#CDCABB] w-70 px-2 mx-auto md:mx-0">
+                  <h2 className="md:whitespace-nowrap" style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'2px'}}>
+                    Послушать работы <br className="md:hidden" />вы можете здесь
+                  </h2>
+                </div>
+                <Social/>
+              </div>
+              <div className="hidden xl:block flex-1 min-w-0 max-w-xl xl:pt-1">
+                <UnreleasedList items={unreleasedTracksDesktopAside} />
+              </div>
             </div>
-            <Social/>
           </motion.div>
         </motion.div>
       </div>
 </section>
 
-       {/* Невыпущенные — иконка пластинки внизу по центру с анимацией рисования */}
-       <section ref={unreleasedSectionRef} className="section-flow relative min-h-screen items-center flex flex-col text-white pt-10 pb-4 bg-transparent">
+       {/* Невыпущенные — на xl+ блок перенесён в портфолио; мобильные и планшеты — полная секция */}
+       <section ref={unreleasedSectionRef} className="section-flow relative min-h-screen items-center flex flex-col text-[#CDCABB] pt-10 pb-16 md:pb-20 bg-[#0c0f2b] xl:hidden">
      
       <motion.div className="w-full flex flex-col items-center md:items-center w-90 bg-transparent pb-30 relative z-10" variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportDefault}>
         <div className="mt-2 text-center pt-6 mb-4 md:mb-8 px-2 min-w-0 overflow-hidden">
@@ -425,44 +414,53 @@ function App() {
           </h2>
         </div>
         <motion.div className="mt-2 w-full" variants={staggerItem}>
-          <UnreleasedList items={tracksNotRealized.tracksNotRealized}/>
+          <UnreleasedList items={unreleasedTracksList}/>
         </motion.div>
         </motion.div>
     </section>
 
     {/* FAQ — в стиле секции «Услуги» */}
     
-
-    {/* Услуги */}
-    <section className="section-flow min-h-screen items-center flex relative px-4 flex-col text-[#F5F5F5] pt-20 pb-20 bg-[#131212]">
+    <section className="section-flow min-h-screen items-center relative px-4 text-[#CDCABB] pt-16 md:pt-20 pb-20 bg-[#0c0f2b]">
       <motion.div className="w-full flex flex-col items-center" variants={staggerContainerSlow.variants} initial="hidden" whileInView="visible" viewport={viewportSectionVisible}>
-        <div className="font-bold mb-10 text-[#FDF4E3]">
-          <h3 className={textSize.small}><AnimatedText text="[Услуги]" /></h3>
+        <div className="font-bold mb-4 text-[#CDCABB]">
+          <h3 className={textSize.small}><AnimatedText text="[FAQ]" /></h3>
         </div>
-        <motion.div variants={staggerItemSlow}>
-          <Services
-            services={[
-              {
-                id: 'prod',
-                title: 'Продакшн',
-                descrip: 'Полный цикл видеопродакшна: от идеи до монтажа. Музыкальные клипы, рекламные ролики, корпоративное видео и съёмка мероприятий. Подготовим смету, поможем оформить бриф или обсудим ваш проект.',
-              },
-              {
-                id: 'sound',
-                title: 'Саунд-дизайн и музыка',
-                descrip: 'Звук для видео и рекламы: оригинальная музыка, сведение, саунд-дизайн и озвучка. Адаптируем стиль под бренд и формат проекта.',
-              },
-              {
-                id: 'post',
-                title: 'Монтаж и постпродакшн',
-                descrip: 'Монтаж, цветокоррекция, графика и анимация. Работаем в любых форматах и сжатые сроки. Итог — готовый ролик под публикацию.',
-              },
-            ]}
-            btn={['смета', 'бриф', 'связь']}
-          />
+        <motion.div className="mt-6 text-center px-2 min-w-0 overflow-hidden" variants={staggerItemSlow}>
+          <h2 className={`${textSize.large} max-w-full mb-10`} style={{fontFamily:'ThirdFonts,sans-serif',letterSpacing:'1px'}}>Ответы на частые вопросы </h2>
+        </motion.div>
+        <motion.div className="w-full max-w-4xl mx-auto mt-2 border-t border-[#2C3E50]/30 flex flex-col gap-3" variants={staggerItemSlow}>
+          {data.questionAnswer.slice(0, 4).map((d, i) => (
+            <div
+              key={d.id}
+              className="bg-[#F2E5D4] px-6 py-6 sm:px-10 sm:py-8 border-b border-[#2C3E50]/30 last:border-b-0"
+            >
+              <div
+                onClick={() => handleAnswer(i)}
+                className="cursor-pointer"
+              >
+                <h4
+                  className={`${textSize.medium} font-serif font-bold text-[#2C3E50] uppercase tracking-tight mb-2 flex justify-between items-start gap-4`}
+                  style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}
+                >
+                  <span className="flex-1">{d.question}</span>
+                  <span className="w-8 h-8 flex items-center justify-center text-xl shrink-0">
+                    {answer === i ? "−" : "+"}
+                  </span>
+                </h4>
+              </div>
+              {answer === i && (
+                <p className={`text-[#5a5a5a] ${textSize.medium} max-w-2xl leading-relaxed pt-2 border-t border-[#2C3E50]/20`}>
+                  {d.answer}
+                </p>
+              )}
+            </div>
+          ))}
         </motion.div>
       </motion.div>
     </section>
+    {/* Услуги */}
+    
     </div>
       
   

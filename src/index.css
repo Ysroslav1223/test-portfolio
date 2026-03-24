@@ -6,7 +6,7 @@ html {
 
 body {
   overflow-x: hidden;
-  background-color: #131212;
+  background-color: #0c0f2b;
 }
 
 /* Мобильная версия: один свайп вверх — одна секция на весь экран (scroll-snap) */
@@ -71,34 +71,23 @@ a:active, button:active {
   font-weight: 100;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'SecondFonts';
-  src: url('../public//fonts/Zerove-Regular.otf') format('woff2');
+  src: url('../public/fonts/Poppins/Poppins-ExtraLight.ttf') format('woff2');
   font-weight: 100;
   font-style: normal;
 }
 @font-face {
-  font-family: 'SixFonts';
-  src: url('../public/fonts/evolventa-1.0/ttf/Evolventa-Oblique.ttf') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'SevenFonts';
-  src: url('../public/fonts/evolventa-1.0/ttf/Evolventa-BoldOblique.ttf') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'EightFonts';
-  src: url('../public/fonts/Poppins-ExtraLight.ttf') format('woff2');
-  font-weight: 400;
+  font-family: 'ThirdFonts';
+  src: url('../public/fonts/Poppins/Poppins-Light.ttf') format('woff2');
+  font-weight: 100;
   font-style: normal;
 }
 
-/* Анимация рисования SVG-линии (петля: карандаш, stroke-dasharray) — цвет как у «Портфолио» */
+/* Анимация рисования SVG-линии (петля: карандаш, stroke-dasharray) — в тон текста секций */
 .draw-line-path {
-  stroke: #FDF4E3;
+  stroke: #CDCABB;
   stroke-width: 0.35px;
   stroke-linecap: round;
   stroke-linejoin: round;
